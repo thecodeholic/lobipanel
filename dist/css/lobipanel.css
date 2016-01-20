@@ -444,10 +444,13 @@ body.lobipanel-minimized {
     display: none;
   }
   .lobipanel .panel-heading .dropdown .dropdown-menu > li > a:hover,
-  .lobipanel .panel-heading .dropdown .dropdown-menu > li > a:focus,
-  .lobipanel .panel-heading .dropdown .dropdown-menu > li > a:hover:focus {
+  .lobipanel .panel-heading .dropdown .dropdown-menu > li > a:focus:hover {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
     background-color: rgba(0, 0, 0, 0.15);
+  }
+  .lobipanel .panel-heading .dropdown .dropdown-menu > li > a:focus {
+    text-shadow: none;
+    background-color: transparent;
   }
   .lobipanel .panel-heading .dropdown .dropdown-toggle {
     display: none;
@@ -549,10 +552,13 @@ body.lobipanel-minimized {
   display: none;
 }
 .lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a:hover,
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a:focus,
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a:hover:focus {
+.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a:focus:hover {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
   background-color: rgba(0, 0, 0, 0.15);
+}
+.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a:focus {
+  text-shadow: none;
+  background-color: transparent;
 }
 .lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-toggle {
   display: none;

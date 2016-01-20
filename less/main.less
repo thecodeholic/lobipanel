@@ -245,11 +245,13 @@ body.lobipanel-minimized{
                     .control-title{
                         display: none;
                     }
-                    &:hover,
-                        &:focus,
-                        &:hover:focus{
+                    &:hover, &:focus:hover{
                         text-shadow: @lobipanel-panel-control-hover-text-shadow;
                         background-color: @lobipanel-panel-control-hover-bg;
+                    }
+                    &:focus{
+                        text-shadow: none;
+                        background-color: transparent;
                     }
                 }
             }

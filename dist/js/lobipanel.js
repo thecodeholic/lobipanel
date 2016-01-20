@@ -38,12 +38,11 @@ String.prototype.getCss = function(){
 };
 
 /**
- * Checks if number is between two numbers
- * 
- * @param int num1
- * @param int num2
- * @param Boolean including "include these numbers in comparison or not" default false
- * @returns boolean
+ *
+ * @param {number} num1
+ * @param {number} num2
+ * @param {boolean} including
+ * @returns {boolean}
  */
 Number.prototype.isBetween = function(num1, num2, including){
     if ( ! including){
@@ -61,7 +60,7 @@ Number.prototype.isBetween = function(num1, num2, including){
 /**
  * Inserts element at specific index in given elements children
  * 
- * @param {Integer} i 
+ * @param {Integer} i
  * @param {String|jQuery instance} selector
  * @returns {undefined}
  */
@@ -98,11 +97,6 @@ $.fn.enableSelection = function() {
 $(function(){
     var LobiPanel = function($el, options) {
 //------------------------------------------------------------------------------
-//----------------PROTOTYPE VARIABLES-------------------------------------------
-//------------------------------------------------------------------------------
-        this.$el;
-        this.$options;
-//------------------------------------------------------------------------------
 //-----------------PRIVATE VARIABLES--------------------------------------------
 //------------------------------------------------------------------------------
         var $heading, $body, innerId, me = this;
@@ -113,9 +107,7 @@ $(function(){
             if ( ! options) {
                 options = {};
             }
-//            window.console.log(LobiPanel.DEFAULT_OPTIONS);
-            $.extend(true, options, LobiPanel.DEFAULT_OPTIONS, options);
-            return options;
+            return $.extend({}, options, LobiPanel.DEFAULT_OPTIONS, options);
         };
         
         var _init = function(){
@@ -165,10 +157,9 @@ $(function(){
             return dropdown;
         };
         var _generateDropdown = function(){
-            var div = $('<div class="dropdown"></div>')
+            return $('<div class="dropdown"></div>')
                     .append('<ul class="dropdown-menu"></ul>')
-                    .append('<button class="dropdown-toggle" data-toggle="dropdown"><span class="'+LobiPanel.PRIVATE_OPTIONS.iconClass+' '+me.$options.toggleIcon+'"></button>');
-            return div;
+                    .append('<button class="dropdown-toggle" data-toggle="dropdown"><span class="'+LobiPanel.PRIVATE_OPTIONS.iconClass+' '+me.$options.toggleIcon+'"></button>');;
         };
         var _generateEditTitle = function(){
             var options = me.$options.editTitle;
@@ -202,7 +193,7 @@ $(function(){
                 control.attr('data-tooltip', options.tooltip);
             }
             _onUnpinClick(control);
-            return $('<li></li>').append(control);;
+            return $('<li></li>').append(control);
         };
         var _onUnpinClick = function(unpin){
             unpin.on('click', function(ev) {
@@ -218,14 +209,15 @@ $(function(){
                 control.attr('data-tooltip', options.tooltip);
             }
             _onReloadClick(control);
-            return $('<li></li>').append(control);;
+            return $('<li></li>').append(control);
         };
         var _onReloadClick = function(reload){
             reload.on('click', function(ev) {
                 if (me.$options.loadUrl){
-                    me.startLoading();
-                    $body.load(me.$options.loadUrl, null, function(){
-                        me.stopLoading();
+                    me.load({
+                        callback: function(){
+                            reload.tooltip('hide');
+                        }
                     });
                 }
             });
@@ -239,11 +231,12 @@ $(function(){
                 control.attr('data-tooltip', options.tooltip);
             }
             _onMinimizeClick(control);
-            return $('<li></li>').append(control);;
+            return $('<li></li>').append(control);
         };
         var _onMinimizeClick = function(minimize){
             minimize.on('click', function(ev) {
                 ev.stopPropagation();
+                minimize.tooltip('hide');
                 me.toggleMinimize();
             });
         };
@@ -256,7 +249,7 @@ $(function(){
                 control.attr('data-tooltip', options.tooltip);
             }
             _onExpandClick(control);
-            return $('<li></li>').append(control);;
+            return $('<li></li>').append(control);
         };
         var _onExpandClick = function(expand) {
             expand.on('click', function(ev) {
@@ -273,7 +266,7 @@ $(function(){
                 control.attr('data-tooltip', options.tooltip);
             }
             _onCloseClick(control);
-            return $('<li></li>').append(control);;
+            return $('<li></li>').append(control);
         };
         var _onCloseClick = function(close) {
             close.on('click', function(ev) {
@@ -290,22 +283,22 @@ $(function(){
             var controls = $heading.find('.controls .panel-control');
 //            me.$options.controls = {};
             controls.each(function(index, el){
-                var el = $(el);
-                var func = el.attr('data-func');
-                me.$options[func].tooltip = el.data('tooltip');
-                me.$options[func].icon = el.data('icon');
-                me.$options[func].icon2 = el.data('icon2');
+                var $el = $(el);
+                var func = $el.attr('data-func');
+                me.$options[func].tooltip = $el.data('tooltip');
+                me.$options[func].icon = $el.data('icon');
+                me.$options[func].icon2 = $el.data('icon2');
                 
                 if (func === 'unpin'){
-                    _onUnpinClick(el);
+                    _onUnpinClick($el);
                 }else if (func === 'reload'){
-                    _onReloadClick(el);
+                    _onReloadClick($el);
                 }else if (func === 'minimize'){
-                    _onMinimizeClick(el);
+                    _onMinimizeClick($el);
                 }else if (func === 'expand'){
-                    _onExpandClick(el);
+                    _onExpandClick($el);
                 }else if (func === 'close'){
-                    _onCloseClick(el);
+                    _onCloseClick($el);
                 }
             });
             me.$options.minWidth = me.$el.attr('data-min-width') || LobiPanel.DEFAULT_OPTIONS.minWidth;
@@ -318,24 +311,24 @@ $(function(){
             }
             //if data-draggable attribute is "false" or "0" the panel will not be draggable
             //for any other text except "false" and "0" the panel will be draggable
-            else if (['false', '0'].indexOf(me.$el.attr('data-draggable').toLowerCase()) > -1){
-                me.$options.draggable = false;
-            }else{
-                me.$options.draggable = true;
+            else {
+                me.$options.draggable = ['false', '0'].indexOf(me.$el.attr('data-draggable').toLowerCase()) === -1;
             }
             me.$options.loadUrl = me.$el.attr('data-load-url') || LobiPanel.DEFAULT_OPTIONS.loadUrl;
             me.$options.resize = me.$el.attr('data-resize') || LobiPanel.DEFAULT_OPTIONS.resize;
         };
         var _getMaxZIndex = function(){
-            var panels = $('.lobipanel.panel-unpin:not(.panel-minimized.panel-expanded)');
+            var panels = $('.lobipanel.panel-unpin:not(.panel-minimized.panel-expanded)'),
+                style,
+                max,
+                cur;
             if (panels.length === 0){
                 return {
                     "id": "",
                     "z-index": LobiPanel.PRIVATE_OPTIONS.initialZIndex
                 };
             }
-            var style = $(panels[0]).attr('style');
-            var max;
+            style = $(panels[0]).attr('style');
             var id = $(panels[0]).data('inner-id');
             if ( ! style){
                 max = LobiPanel.PRIVATE_OPTIONS.initialZIndex;
@@ -343,8 +336,7 @@ $(function(){
                 max = style.getCss()['z-index'];
             }
             for (var i = 1; i<panels.length; i++){
-                var style = $(panels[i]).attr('style');
-                var cur;
+                style = $(panels[i]).attr('style');
                 if ( ! style){
                     cur = 0;
                 }else{
@@ -446,28 +438,28 @@ $(function(){
             me.$el.insertAt(me.$el.attr('data-index'), parent);
         };
         var _generateWindow8Spinner = function(){
-            var template = '<div class="spinner spinner-windows8">\n\
-                        <div class="wBall">\n\
-                            <div class="wInnerBall">\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="wBall">\n\
-                            <div class="wInnerBall">\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="wBall">\n\
-                            <div class="wInnerBall">\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="wBall">\n\
-                            <div class="wInnerBall">\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="wBall">\n\
-                            <div class="wInnerBall">\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
+            var template = ['<div class="spinner spinner-windows8">',
+                        '<div class="wBall">',
+                            '<div class="wInnerBall">',
+                            '</div>',
+                        '</div>',
+                        '<div class="wBall">',
+                            '<div class="wInnerBall">',
+                            '</div>',
+                        '</div>',
+                        '<div class="wBall">',
+                            '<div class="wInnerBall">',
+                            '</div>',
+                        '</div>',
+                        '<div class="wBall">',
+                            '<div class="wInnerBall">',
+                            '</div>',
+                        '</div>',
+                        '<div class="wBall">',
+                            '<div class="wInnerBall">',
+                            '</div>',
+                        '</div>',
+                    '</div>'].join("");
             return $('<div class="spinner-wrapper">'+template+'</div>');
         };
         var _enableSorting = function(){
@@ -535,10 +527,7 @@ $(function(){
          */
         this.isPanelInit = function(){
             var me = this;
-            if (me.$el.hasClass('lobipanel') && me.$el.data('inner-id')){
-                return true;
-            }
-            return false;
+            return me.$el.hasClass('lobipanel') && me.$el.data('inner-id');
         };
         /**
          * Checks if panel is pinned or unpinned
@@ -563,11 +552,11 @@ $(function(){
             //remove on panel click event (which brings the panel into front)
             _offPanelClick();
             //remove panel-unpin class
-            me.$el.removeClass('panel-unpin');
-            //save current position, z-index and size to use it for later unpin
-            me.$el.attr('old-style', me.$el.attr('style'));
-            me.$el.removeAttr('style');
-            me.$el.css('position', 'relative');
+            me.$el.removeClass('panel-unpin')
+                //save current position, z-index and size to use it for later unpin
+                .attr('old-style', me.$el.attr('style'))
+                .removeAttr('style')
+                .css('position', 'relative');
             $body.css({
                 width: '',
                 height: ''
@@ -601,7 +590,7 @@ $(function(){
                     left: left,
                     top: top,
                     width: width,
-                    height: height,
+                    height: height
 //                    right: $(window).width() - left - width + 2,
 //                    bottom: $(window).height() - top - height + 2
                 });
@@ -958,6 +947,11 @@ $(function(){
                     $('body').css('overflow', 'auto');
                 }
                 me.$el.remove();
+                //If there are no other elements inside footer, remove it also
+                var footer = _getFooterForMinimizedPanels();
+                if (footer.children().length === 0) {
+                    footer.remove();
+                }
                 me.$el.trigger('onClose.lobiPanel', me);
             });
             return me;
@@ -966,8 +960,8 @@ $(function(){
          * Moves unpinned panel to given position. 
          * This method will do nothing if panel is pinned
          * 
-         * @param {Integer} left
-         * @param {Integer} top
+         * @param {number} left
+         * @param {number} top
          * @returns {LobiPanel}
          */
         this.setPosition = function(left, top){
@@ -984,7 +978,7 @@ $(function(){
         /**
          * Set the width of the panel
          * 
-         * @param {Integer} w
+         * @param {number} w
          * @returns {LobiPanel}
          */
         this.setWidth = function(w){
@@ -1003,7 +997,7 @@ $(function(){
         /**
          * Set the height of the panel
          * 
-         * @param {Integer} h
+         * @param {number} h
          * @returns {LobiPanel}
          */
         this.setHeight = function(h){
@@ -1022,8 +1016,8 @@ $(function(){
         /**
          * Set size (width and height) of the panel
          * 
-         * @param {Integer} w
-         * @param {Integer} h
+         * @param {number} w
+         * @param {number} h
          * @returns {LobiPanel}
          */
         this.setSize = function(w, h){
@@ -1058,7 +1052,7 @@ $(function(){
         /**
          * Get width of the panel
          * 
-         * @returns {Integer}
+         * @returns {number}
          */
         this.getWidth = function(){
             return me.$el.width();
@@ -1066,7 +1060,7 @@ $(function(){
         /**
          * Get height of the panel
          * 
-         * @returns {Integer}
+         * @returns {number}
          */
         this.getHeight = function(){
             return me.$el.height();
@@ -1199,22 +1193,18 @@ $(function(){
          * @returns {LobiPanel}
          */
         this.load = function(params){
-            me.$el.trigger("beforeLoad.lobiPanel", me);
-            var url, 
-                data = null, 
-                callback = null;
-            if ( ! params){
-                url = me.$options.loadUrl;
-            }else if (typeof params === 'string'){
-                url = params;
-            }else if (typeof params === 'object' && ! $.isEmptyObject(params)){
-                url = params.url || me.$options.loadUrl;
-                data = params.data;
+            params = params || {};
+            if (typeof params === 'string'){
+                params = {url: params};
+            }
+            var url = params.url || me.$options.loadUrl,
+                data = params.data || {},
                 callback = params.callback || null;
-            }
+
             if ( ! url){
-                return;
+                return me;
             }
+            me.$el.trigger("beforeLoad.lobiPanel", me);
             me.startLoading();
             $body.load(url, data, function(result, status, xhr){
                 if (callback && typeof callback === 'function'){
@@ -1331,7 +1321,6 @@ $(function(){
         $heading = this.$el.find('>.panel-heading');
         $body = this.$el.find('>.panel-body');
         _init();
-        window.console.log(me);
     };
     
     $.fn.lobiPanel = function(option){

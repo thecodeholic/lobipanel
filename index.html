@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="lib/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="lib/highlight/github.css"/>
     <link rel="stylesheet" href="demo/documentation.css"/>
@@ -21,6 +22,36 @@
                         LobiPanel is jquery plugin for bootstrap panels.
                         It extends panels with several common and useful functions which does not come by default.
                     </p>
+                </div>
+                <div id="installation">
+                    <h2>Installation and dependecies.</h2>
+                    <p>LobiPanel is depended on jQuery, jQuery ui and bootstrap.</p>
+                    <h3>1. Include necessary css/js files</h3>
+                    <div class="alert alert-warning">
+                        <h4>Important!!</h4>
+                        <p>It may have too many dependencies but this is first version, step by step it will be improved and dependencies will dissapear.</p>
+                    </div>
+                    <div class="highlight">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;!--Include this css file in the &lt;head&gt; tag --&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;lib/jquery-ui.min.css&quot;/&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap/dist/css/bootstrap.min.css&quot;/&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;dist/css/lobipanel.min.css&quot;/&gt;
+   &lt;/head&gt;
+
+   &lt;body&gt;
+      ...
+      &lt;!--Include these script files in the &lt;head&gt; or &lt;body&gt; tag--&gt;
+      &lt;script src=&quot;lib/jquery.1.11.min.js&quot;&gt;&lt;/script&gt;
+      &lt;script src=&quot;lib/jquery-ui.min.js&quot;&gt;&lt;/script&gt;
+      &lt;script src=&quot;bootstrap/dist/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+      &lt;script src=&quot;dist/js/lobipanel.min.js&quot;&gt;&lt;/script&gt;
+   &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                    <h3>2. Initialize plugin</h3>
                 </div>
                 <!--Usage-->
                 <div id="lobipanel-usage">
@@ -1471,13 +1502,13 @@ $('.lobipanel').on('loaded.lobiPanel', function(ev, lobiPanel, result, status, x
                         <h3>Load content from url</h3>
                         <p>Load content from specified url and apply highlight code</p>
                         <div class="bs-example">
-                            <div id="lobipanel-from-url" class="panel panel-success" data-autoload="false" style="height: 400px; overflow: auto;">
+                            <div id="lobipanel-from-url" class="panel panel-success" data-autoload="false">
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <h4>Content from url</h4>
                                     </div>
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body" style="height: 400px; overflow: auto;">
 
                                 </div>
                             </div>
@@ -1857,7 +1888,7 @@ $('selector').lobiPanel({
     <script src="lib/jquery-ui.min.js"></script>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="lib/highlight/highlight.pack.js"></script>
-    <script src="dist/js/lobipanel.js"></script>
+    <script src="dist/js/lobipanel.min.js"></script>
     <script>
         $(function(){
             var codes = $('.highlight code');
@@ -1907,13 +1938,11 @@ $('selector').lobiPanel({
                     $body.html('<div class="highlight"><pre><code>' + $body.html() + '</code></pre></div>');
                     hljs.highlightBlock($body.find('code')[0]);
                 }).lobiPanel({
-                    loadUrl: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css',
+                    loadUrl: 'bootstrap/dist/css/bootstrap.min.css',
                     bodyHeight: 400
                 });
                 console.log($('#lobipanel-multiple').find('.panel'));
-                $('#lobipanel-multiple').find('.panel').lobiPanel({
-                    sortable: true
-                });
+
             });
         });
     </script>
