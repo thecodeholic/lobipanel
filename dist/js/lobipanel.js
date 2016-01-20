@@ -254,7 +254,7 @@ $(function(){
             control.on('click', function() {
                 me.load({
                     callback: function(){
-                        reload.tooltip('hide');
+                        control.tooltip('hide');
                     }
                 });
             });
@@ -1190,9 +1190,11 @@ $(function(){
                 maxHeight: me.$options.maxHeight,
                 handles: handles,
                 start: function(){
+                    me.$el.disableSelection();
                     _triggerEvent('resizeStart');
                 },
                 stop: function(){
+                    me.$el.enableSelection();
                     _triggerEvent('resizeStop');
                 },
                 resize: function(){

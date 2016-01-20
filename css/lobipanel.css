@@ -426,6 +426,7 @@ body.lobipanel-minimized {
     display: inline-block;
   }
   .lobipanel .panel-heading .dropdown .dropdown-menu > li > a {
+    cursor: pointer;
     color: inherit;
     padding: 0;
     outline: 0;
@@ -534,6 +535,7 @@ body.lobipanel-minimized {
   display: inline-block;
 }
 .lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a {
+  cursor: pointer;
   color: inherit;
   padding: 0;
   outline: 0;
@@ -588,9 +590,9 @@ body.lobipanel-minimized {
   position: fixed;
   height: 36px;
   padding: 2px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 20000;
   background: rgba(34, 115, 182, 0.51);
 }
