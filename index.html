@@ -1,10 +1,1921 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Lobipanel - jQuery plugin for bootstrap panels. It extends panels with several common and useful functions.</title>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lib/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="lib/highlight/github.css"/>
+    <link rel="stylesheet" href="demo/documentation.css"/>
+    <link rel="stylesheet" href="dist/css/lobipanel.min.css"/>
+    <link rel="stylesheet" href="demo/demo.css"/>
 </head>
 <body>
+    <div id="lobipanel">
+        <div class="container">
+                <!--Description-->
+                <div id="lobipanel-description">
+                    <h1 class="page-header-dashed">LobiPanel</h1>
+                    <p class="lead">
+                        LobiPanel is jquery plugin for bootstrap panels.
+                        It extends panels with several common and useful functions which does not come by default.
+                    </p>
+                </div>
+                <!--Usage-->
+                <div id="lobipanel-usage">
+                    <h3>Basic usage</h3>
+                    <p>LobiPanel initialization is simple. Just create correct markup of bootstrap panel and call plugin</p>
+                    <div class="highlight">
+                        <pre>
+<code class="html">&lt;div class=&quot;panel panel-default&quot;&gt;
+    &lt;div class=&quot;panel-heading&quot;&gt;
+        &lt;div class=&quot;panel-title&quot;&gt;
+            &lt;h4&gt;Panel title&lt;/h4&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;panel-body&quot;&gt;
+        Lorem ipsum...
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;</code>
+<code class="javascript">   $(function(){
+        $('.panel').lobiPanel({
+            //Options go here
+            ...
+        });
+    });</code>
+<code class="html">&lt;/script&gt;</code>
+                        </pre>
+                    </div>
+                    <p>And you will get the following result. </p>
+                    <div class="panel panel-default" id="demoPanel11">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h4>Panel title</h4>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            Lorem ipsum...
+                        </div>
+                    </div>
+                    <h4>Using the buttons on the right side of the panel heading you can perform several actions.</h4>
+                    <ul>
+                        <li>
+                            This button <span class="glyphicon glyphicon-remove"></span>  removes the panel from document.
+                            <p><span class="text-warning-dark">Warning!!!. This operation can not be undone.</span></p>
+                        </li>
+                        <li>This button <span class="glyphicon glyphicon-resize-full"></span> expands the panel on full screen.</li>
+                        <li>This button <span class="glyphicon glyphicon-refresh"></span> loads content in <code>.panel-body</code> from specified URL.</li>
+                        <li>
+                            This button <span class="glyphicon glyphicon-move"></span> takes out the panel from its position in DOM hierarchy and makes it floating.
+                            <p>Anytime you like (with the same button) you can put the panel in its position.</p>
+                        </li>
+                        <li>
+                            This button <span class="glyphicon glyphicon-minus"></span> has two functions.
+                            <ol>
+                                <li>It collapses and expands the panel.</li>
+                                <li>It minimizes the panel at the bottom of the page when panel is <b>taken out from DOM hierarchy</b>.</li>
+                            </ol>
+                        </li>
+                    </ul>
+                    <div class="callout callout-info">
+                        <p>On small screen panel controls are hidden and dropdown toggle <span class="glyphicon glyphicon-cog"></span> button is shown. </p>
+                    </div>
+                </div>
+                <!--Options-->
+                <div id="lobipanel-options">
+                    <h3>Options</h3>
+                    <p>Options can be set via <code>data-*</code> attributes also. Just used dashed version instead of camelCase.
+                        For example: <code>connectWith</code> option via <code>data-*</code> attributes will be <code>data-connect-with</code>.</p>
+                    <p>You can also use objects via <code>data-*</code> attributes. Example: <code>data-close="{tooltip: 'Something'}"</code></p>
+                    <div class="plugin-documentation plugin-options">
+                        <div class="row row-header">
+                            <div class="cell cell-name">Name</div>
+                            <div class="cell cell-type">Type</div>
+                            <div class="cell cell-default">Default</div>
+                            <div class="cell cell-descr">Description</div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                draggable <span class="text-mobile"><code>[Boolean]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>true</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Makes <b>unpinned</b> panel draggable.
+                                <small class="text-warning">Warning!!! This requires jQuery ui draggable widget to be included.</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                sortable <span class="text-mobile"><code>[Boolean]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>false</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Makes <b>pinned</b> panels sortable.
+                                <small class="text-warning">Warning!!! This requires jQuery ui sortable widget to be included.</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                connectWith <span class="text-mobile"><code>[String]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>String</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>".ui-sortable"</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                jQuery ui sortable plugin option. To avoid any problems this option must be same for all panels of the same parent.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                resize <span class="text-mobile"><code>[String]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>String</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>"both"</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Set unpin panel resize direction
+                                Possible values: <code>"both"</code>, <code>"vertical"</code>, <code>"horizontal"</code>, <code>"none"</code>.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                minWidth <span class="text-mobile"><code>[Integer]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Integer</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>200</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Minimum width <b>unpin, resizable</b> panel can have.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                minHeight <span class="text-mobile"><code>[Integer]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Integer</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>100</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Minimum height <b>unpin, resizable</b> panel can have.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                maxWidth <span class="text-mobile"><code>[Integer]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Integer</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>1200</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Maximum width <b>unpin, resizable</b> panel can have.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                maxHeight <span class="text-mobile"><code>[Integer]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Integer</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>700</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Maximum height <b>unpin, resizable</b> panel can have.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                loadUrl <span class="text-mobile"><code>[String]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>String</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>""</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                The url which will be used to load content. If not provided reload button will do nothing.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                tooltips <span class="text-mobile"><code>[Boolean]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>true</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                This will enable tooltips on panel controls.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                toggleIcon <span class="text-mobile"><code>[String]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>String</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>"glyphicon glyphicon-cog"</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Dropdown toggle icon.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                expandAnimation <span class="text-mobile"><code>[Integer]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Integer</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>100</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Expand to full screen animation duration
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                collapseAnimation <span class="text-mobile"><code>[Integer]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Integer</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span> <code>100</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Collapse from full screen animation duration
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                unpin <span class="text-mobile"><code>[Object]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Object</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span>
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    icon : 'glyphicon glyphicon-move',
+    tooltip : 'Unpin'
+}
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                By <code>icon</code> property you can change the Unpin button <span class="glyphicon glyphicon-move"></span> icon.
+                                The <code>tooltip</code> property changes the tooltip of the button.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                reload <span class="text-mobile"><code>[Object]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Object</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span>
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    icon : 'glyphicon glyphicon-refresh',
+    tooltip : 'Reload'
+}
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                By <code>icon</code> property you can change the Reload button <span class="glyphicon glyphicon-refresh"></span> icon.
+                                The <code>tooltip</code> property changes the tooltip of the button.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                minimize <span class="text-mobile"><code>[Object]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Object</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span>
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    icon : 'glyphicon glyphicon-minus',
+    icon2 : 'glyphicon glyphicon-plus',
+    tooltip : 'Minimize'
+}
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                By <code>icon</code> property you can change the Minimize button <span class="glyphicon glyphicon-minus"></span> icon.
+                                By <code>icon2</code> property you can change the Minimize button <span class="glyphicon glyphicon-plus"></span> icon.
+                                The <code>tooltip</code> property changes the tooltip of the button.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                expand <span class="text-mobile"><code>[Object]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Object</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span>
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    icon : 'glyphicon glyphicon-resize-full',
+    icon2 : 'glyphicon glyphicon-resize-small',
+    tooltip : 'Fullscreen'
+}
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                By <code>icon</code> property you can change the Fullscreen button <span class="glyphicon glyphicon-resize-full"></span> icon.
+                                By <code>icon2</code> property you can change the Fullscreen button <span class="glyphicon glyphicon-resize-small"></span> icon.
+                                The <code>tooltip</code> property changes the tooltip of the button.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                close <span class="text-mobile"><code>[Object]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Object</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span>
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    icon : 'glyphicon glyphicon-remove',
+    tooltip : 'Close'
+}
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                By <code>icon</code> property you can change the Close button <span class="glyphicon glyphicon-remove"></span> icon.
+                                The <code>tooltip</code> property changes the tooltip of the button.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                editTitle <span class="text-mobile"><code>[Object]</code></span>
+                            </div>
+                            <div class="cell cell-type">
+                                <code>Object</code>
+                            </div>
+                            <div class="cell cell-default">
+                                <span class="text-mobile">Default</span>
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    icon: 'glyphicon glyphicon-pencil',
+    icon2: 'glyphicon glyphicon-floppy-disk',
+    tooltip: 'Edit title'
+}</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                ...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Methods-->
+                <div id="lobipanel-methods">
+                    <h3>Methods</h3>
+                    <p>Methods can be called in two ways.</p>
+                    <p>1. You can get the <code>LobiPanel</code> - instance and call the method</p>
+                    <div class="highlight">
+                        <pre><code class="javascript">//get the LobiPanel instance
+var instance = $('.lobipanel').data('lobiPanel');
+//call the methods
+instance.unpin();
+instance.setPosition(400, 360);
+instance.setLoadUrl("htpp://www.example.com");
+var position = instance.getPosition();
+//method chaining is also available
+instance.setSize(400, 400)
+.setPosition(400, 360)
+.setLoadUrl("htpp://www.example.com")
+.load();
+</code></pre>
+                    </div>
+                    <p>2. Or you can call the method directly</p>
+                    <div class="highlight">
+                        <pre><code class="javascript">$('.lobipanel').lobiPanel('startLoading');
+$('.lobipanel').lobiPanel("setPosition", 400, 360);
+var position = $('.lobipanel').lobiPanel("getPosition");
+</code></pre>
+                    </div>
 
+
+                    <div class="plugin-documentation plugin-methods">
+                        <div class="row row-header">
+                            <div class="cell cell-name">Name</div>
+                            <div class="cell cell-params">Parameters</div>
+                            <div class="cell cell-return">Return type</div>
+                            <div class="cell cell-descr">Description</div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                isPanelInit <span class="text-mobile"> - Return <code>Boolean</code></span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Checks if panel is initialized. Panel is initialized if it has <code>.lobipanel</code> class and <code>data-inner-id</code> attribute
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                isPinned <span class="text-mobile"> - Return <code>Boolean</code></span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Checks if panel is pinned
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                pin <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Pin the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                unpin <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Unpin the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                togglePin <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Toggles (pin or unpin) the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                isMinimized <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Checks if panel is minimized or not. It does not matter if panel is pinned or not
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                minimize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Minimizes the panel. If panel is pinned it is minimized on its place, if panel is unpinned it is minimized at the bottom of the page
+                                <p><b class="text-warning">If pinned panel is minimized <span class="glyphicon glyphicon-move text-gray-darker"></span> and <span class="glyphicon glyphicon-resize-full text-gray-darker"></span> buttons will not work</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                maximize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Maximize the panel. This method works for minimized panel.
+                                If panel is pinned it's maximized on its place.
+                                If panel is unpinned it's maximized on position from which it was minimized.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                toggleMinimize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Toggles (minimize or maximize) the panel state
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                isOnFullScreen <span class="text-mobile"> - Return <code>Boolean</code></span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Checks if panel is expanded on full screen
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                toFullScreen <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Expands the panel to full screen size
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                toSmallSize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Collapse the panel to small size
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                toggleSize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Toggles (changes to full screen size or to small size) the panel size
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                close <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters</span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Closes the panel (Removes it from document)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                setWidth(width) <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><i>width</i> - <code>Integer</code>, <code>REQUIRED</code> new width of the panel</div>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Change the width of the panel.
+                                If given width is out of range of <code>minWidth</code> and <code>maxWidth</code>
+                                it is reduced to <code>maxWidth</code> size or increased to <code>minWidth</code> size.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                setHeight(height) <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><i>height</i> - <code>Integer</code>, <code>REQUIRED</code> new height of the panel</div>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Change the height of the panel.
+                                If given height is out of range of <code>minHeight</code> and <code>maxHeight</code>
+                                it is reduced to <code>maxHeight</code> size or increased to <code>minHeight</code> size.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                setSize(width, height) <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><i>width</i> - <code>Integer</code>, <code>REQUIRED</code> new width of the panel</div>
+                                <div><i>height</i> - <code>Integer</code>, <code>REQUIRED</code> new height of the panel</div>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Set size (width and height) of the panel.
+                                <p>
+                                    If given width is out of range of <code>minWidth</code> and <code>maxWidth</code>
+                                    it is reduced to <code>maxWidth</code> size or increased to <code>minWidth</code> size.
+                                </p>
+                                <p>
+                                    If given height is out of range of <code>minHeight</code> and <code>maxHeight</code>
+                                    it is reduced to <code>maxHeight</code> size or increased to <code>minHeight</code> size.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                getPosition
+                                <div class="text-mobile">
+                                    - Return <code>Object</code>
+                                    <div class="highlight">
+                                        <pre><code class="javascript">{
+    x: 'left coordinate',
+    y: 'top coordinate'
+}
+</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <div class="highlight">
+                                    <pre><code class="javascript">{
+    x: 'left coordinate',
+    y: 'top coordinate'
+}
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Get the current position of the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                getWidth <span class="text-mobile"> - Return <code>Integer</code> width of the panel</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>Integer</code> width of the panel
+                            </div>
+                            <div class="cell cell-descr">
+                                Get width of the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                getHeight <span class="text-mobile"> - Return <code>Integer</code> height of the panel</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>Integer</code> height of the panel
+                            </div>
+                            <div class="cell cell-descr">
+                                Get height of the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                bringToFront <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                If panel is overlapped by another panel this metho will show overlapped panel on front. <b class="text-info">This is automatically done when you click panel which is on back</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                enableDrag <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Enable dragging of panel. <b class="text-info">This is automatically called when panel is unpinned</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                disableDrag <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Disable dragging of the panel. <b class="text-info">This is automatically called when panel is pinned, or minimized on footer, or maximized on full screen.</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                enableResize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Enable resize of the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                disableResize <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Disable resize of the panel
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                startLoading <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Start spinner of the panel loading
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                stopLoading <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Stop spinner of the panel loading
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                setLoadUrl(url) <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><i>url</i> - <code>String</code> , <code>REQUIRED</code>. Url to load content</div>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Set <code>loadUrl</code> property.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                load(params) <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><i>params</i> - <code>Mixed</code>, <code>OPTIONAL</code>
+                                    This parameter may be <code>String</code> (which will be used as url to load content) or <code>Object</code>
+                                    of the following format.
+                                </div>
+                                <div>
+                                    <div class="highlight">
+                                        <pre><code class="javascript">{
+    url: 'String', //<small>OPTIONAL</small> load url
+    data: 'PlainObject or String', //<small>OPTIONAL</small>: A plain object or string of parameters which is sent to the server with the request.
+    callback: 'function' //<small>OPTIONAL</small>:  callback function which is called when load is finished
+}
+</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Loads content by ajax into <code>.panel-body</code>. If parameter was not provided, <code>loadUrl</code> property will be used as URL.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                destroy <span class="text-mobile"> - Return <code>jQuery element</code></span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>jQuery element</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Destroy the LobiPanel instance
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                startTitleEditing <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Creates input field to edit panel title
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                isTitleEditing <span class="text-mobile"> - Return <code>Boolean</code></span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>Boolean</code>
+                            </div>
+                            <div class="cell cell-descr">
+                                Check if panel title is being edited (if it is in edit process)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                cancelTitleEditing <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Cancel the panel new title and return to previous title when it is changed but not saved
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                finishTitleEditing <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Finish the panel title editing process and save new title
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                enableTooltips <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Enable tooltips on panel controls
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                disableTooltips <span class="text-mobile"> - Return <code>LobiPanel</code> - instance</span>
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span> <code>none</code>
+                            </div>
+                            <div class="cell cell-return">
+                                <code>LobiPanel</code> - instance
+                            </div>
+                            <div class="cell cell-descr">
+                                Disable tooltips on panel controls
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Events-->
+                <div id="lobipanel-events">
+                    <h3>Events</h3>
+                    <h4>Using event</h4>
+                    <div class="highlight">
+                        <pre><code class="language-javascript">$('.lobipanel').on('init.lobiPanel', function(ev, lobiPanel){
+    window.console.log("init event called");
+});
+$('.lobipanel').on('beforeUnpin.lobiPanel', function(ev, lobiPanel){
+    window.console.log("Before unpin", lobiPanel);
+});
+$('.lobipanel').on('onSmallSize.lobiPanel', function(ev, lobiPanel){
+    window.console.log("On small size", ev, lobiPanel);
+});
+$('.lobipanel').on('loaded.lobiPanel', function(ev, lobiPanel, result, status, xhr){
+    window.console.log("Loaded", ev, lobiPanel, result, status, xhr);
+});
+</code></pre>
+                    </div>
+                    <div class="plugin-documentation plugin-events">
+                        <div class="row row-header">
+                            <div class="cell cell-name">Name</div>
+                            <div class="cell cell-params">Parameters</div>
+                            <div class="cell cell-descr">Description</div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                init.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is initialized
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeUnpin.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is unpinned
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onUnpin.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is unpinned
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeClose.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is closed
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onClose.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is removed
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeToFront.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel (which is overlapped by another panel) is shown with high <code>z-index</code>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onToFront.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel (which is overlapped by another panel) is clicked and it is shown with high <code>z-index</code>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforePin.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is pinned
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onPin.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is pinned
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeMinimize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is minimized
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onMinimize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is minimized
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeMaximize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is maximized
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onMaximize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is maximized
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeFullScreen.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is expanded on full screen
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onFullScreen.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is expanded on full screen
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeSmallSize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel is collapsed from full screen to small size
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onSmallSize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel is collapsed from full screen to small size
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                beforeLoad.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                Before panel content is loaded
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                startLoading.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel starts loading content by ajax
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                loaded.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                                <div><code>result</code> - result of ajax call</div>
+                                <div><code>status</code> - status of ajax call</div>
+                                <div><code>xhr</code> - XMLHttpRequest object</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                When panel content is loaded
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                resizeStart.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                This event is triggered at the start of a resize operation.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                onResize.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                This event is triggered during the resize
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                resizeStop.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                This event is triggered at the end of the unpin panel resize operation.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell-name">
+                                dragged.lobiPanel
+                            </div>
+                            <div class="cell cell-params">
+                                <span class="text-mobile">Parameters: </span>
+                                <div><code>event</code> - jQuery event</div>
+                                <div><code>LobiPanel</code> - instance of plugin</div>
+                            </div>
+                            <div class="cell cell-descr">
+                                This event is triggered when sorting is stopped and the DOM position has changed.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Examples-->
+                <div id="lobipanel-examples">
+                    <!--Basic example-->
+                    <div>
+                        <h3>Basic example</h3>
+                        <div class="bs-example">
+                            <div id="lobipanel-basic" class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        Panel title
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    Lorem ipsum dolor sit amet concealed leaf shah proper council binary. Concealed assured affairs faces, finish easily glows shouted faint. Sentence islands spouting we unbeguiled, faces concealed. Diam rays countries, faces fames peeling bind wary catch solomon, painting, they beats evil. Failing newer landscapes steal retinues vidi rays echoes sheltered evil. Veins concealed spouting obtaining delight wild. Venenatis failing wreaths shouted countries wild, privilege climbing.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>$('selector').lobiPanel();
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Custom controls-->
+                    <div>
+                        <h3>Disable control buttons</h3>
+                        <div class="bs-example">
+                            <div id="lobipanel-custom-control" class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        Panel title
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    Lorem ipsum dolor sit amet concealed leaf shah proper council binary. Concealed assured affairs faces, finish easily glows shouted faint. Sentence islands spouting we unbeguiled, faces concealed. Diam rays countries, faces fames peeling bind wary catch solomon, painting, they beats evil. Failing newer landscapes steal retinues vidi rays echoes sheltered evil. Veins concealed spouting obtaining delight wild. Venenatis failing wreaths shouted countries wild, privilege climbing.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>$('selector').lobiPanel({
+    reload: false,
+    close: false,
+    editTitle: false
+});
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Font awesome controls-->
+                    <div>
+                        <h3>Use font awesome icons</h3>
+                        <div class="bs-example">
+                            <div id="lobipanel-font-awesome" class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        Panel title
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    Lorem ipsum dolor sit amet concealed leaf shah proper council binary. Concealed assured affairs faces, finish easily glows shouted faint. Sentence islands spouting we unbeguiled, faces concealed. Diam rays countries, faces fames peeling bind wary catch solomon, painting, they beats evil. Failing newer landscapes steal retinues vidi rays echoes sheltered evil. Veins concealed spouting obtaining delight wild. Venenatis failing wreaths shouted countries wild, privilege climbing.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>$('selector').lobiPanel({
+    reload: {
+        icon: 'fa fa-refresh'
+    },
+    editTitle: {
+        icon: 'fa fa-edit',
+        icon2: 'fa fa-save'
+    },
+    unpin: {
+        icon: 'fa fa-arrows'
+    },
+    minimize: {
+        icon: 'fa fa-chevron-up',
+        icon2: 'fa fa-chevron-down'
+    },
+    close: {
+        icon: 'fa fa-times-circle'
+    },
+    expand: {
+        icon: 'fa fa-expand',
+        icon2: 'fa fa-compress'
+    }
+});
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Constrain panel size-->
+                    <div>
+                        <h3>Constrain panel size</h3>
+                        <p>Unpin the panel and try to resize it.</p>
+                        <div class="bs-example">
+                            <div id="lobipanel-constrain-size" class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        Panel title
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    Lorem ipsum dolor sit amet concealed leaf shah proper council binary. Concealed assured affairs faces, finish easily glows shouted faint. Sentence islands spouting we unbeguiled, faces concealed. Diam rays countries, faces fames peeling bind wary catch solomon, painting, they beats evil. Failing newer landscapes steal retinues vidi rays echoes sheltered evil. Veins concealed spouting obtaining delight wild. Venenatis failing wreaths shouted countries wild, privilege climbing.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>$('selector').lobiPanel({
+    minWidth: 300,
+    minHeight: 300,
+    maxWidth: 600,
+    maxHeight: 480
+});
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Load content from ajax-->
+                    <div>
+                        <h3>Load content from url</h3>
+                        <p>Load content from specified url and apply highlight code</p>
+                        <div class="bs-example">
+                            <div id="lobipanel-from-url" class="panel panel-success" data-autoload="false" style="height: 400px; overflow: auto;">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>Content from url</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>$('selector').on('loaded.lobiPanel', function(ev, lobiPanel){
+    var $body = lobiPanel.$el.find('.panel-body');
+    $body.html('&lt;div class="highlight">&ltpre>&lt;code>' + $body.html() + '&lt;/code>&lt;/pre>&lt;/div>');
+    hljs.highlightBlock($body.find('code')[0]);
+});
+$('selector').lobiPanel({
+    loadUrl: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css',
+    bodyHeight: 400
+});
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Multiple lobiPanels-->
+                    <div id="lobipanel-multiple">
+                        <h3>Multiple panels with drag & drop</h3>
+                        <p>Drag panels by clicking on the headers</p>
+                        <div class="bs-example">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h4>Panel title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjE0LjUiIHk9IjMyIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading">Media heading</h4>
+                                                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h4>Panel title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjE0LjUiIHk9IjMyIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading">Media heading</h4>
+                                                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h4>Panel title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjE0LjUiIHk9IjMyIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading">Media heading</h4>
+                                                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h4>Panel title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Username</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>Jacob</td>
+                                                        <td>Thornton</td>
+                                                        <td>@fat</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td>Larry</td>
+                                                        <td>the Bird</td>
+                                                        <td>@twitter</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h4>Panel title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Username</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>Jacob</td>
+                                                        <td>Thornton</td>
+                                                        <td>@fat</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td>Larry</td>
+                                                        <td>the Bird</td>
+                                                        <td>@twitter</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>$('.panel').lobiPanel({
+    sortable: true
+});
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Initialize with data attributes-->
+                    <div>
+                        <h3>Initialize with <code>data-*</code> attributes</h3>
+                        <div class="bs-example">
+                            <div class="panel panel-default lobipanel" data-inner-id="lobipanel-data-attributes" data-body-height="300" data-tooltips="false"
+                                 data-min-width="400" data-resize="horizontal" data-close="{tooltip: 'custom'}">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        This is panel title
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td>Larry</td>
+                                                <td>the Bird</td>
+                                                <td>@twitter</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>&lt;div class=&quot;panel panel-default lobipanel&quot; data-inner-id=&quot;lobipanel-data-attributes&quot; data-body-height=&quot;300&quot; data-tooltips=&quot;false&quot; data-min-width=&quot;400&quot; data-resize=&quot;horizontal&quot; data-close=&quot;{tooltip: &apos;custom&apos;}&quot;&gt;
+   &lt;div class=&quot;panel-heading&quot;&gt;
+       &lt;div class=&quot;panel-title&quot;&gt;
+           This is panel title
+       &lt;/div&gt;
+   &lt;/div&gt;
+   &lt;div class=&quot;panel-body&quot;&gt;
+        content
+   &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+                        </div>
+                    </div>
+                    <!--Nested LobiPanel-->
+                    <div id="lobipanel-nested-example">
+                        <h4>Nested LobiPanel example</h4>
+                        <div class="bs-example">
+                            <div class="panel panel-info lobipanel">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>LobiPanel title</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="panel panel-warning lobipanel">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h4>Nested LobiPanel title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            Panel 1
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default lobipanel" data-sortable="true">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">
+                                                        <h4>Panel title</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    Panel 2
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default lobipanel" data-sortable="true">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">
+                                                        <h4>Panel title</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    Panel 3
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default lobipanel" data-sortable="true">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">
+                                                        <h4>Panel title</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    Panel 4
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default lobipanel" data-sortable="true">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">
+                                                        <h4>Panel title</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    Panel 5
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <pre><code>&lt;div class=&quot;panel panel-info lobipanel&quot;&gt;
+    &lt;div class=&quot;panel-heading&quot;&gt;
+        &lt;div class=&quot;panel-title&quot;&gt;
+            &lt;h4&gt;LobiPanel title&lt;/h4&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;panel-body&quot;&gt;
+        &lt;div class=&quot;panel panel-warning lobipanel&quot;&gt;
+            &lt;div class=&quot;panel-heading&quot;&gt;
+                &lt;div class=&quot;panel-title&quot;&gt;
+                    &lt;h4&gt;Nested LobiPanel title&lt;/h4&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;panel-body&quot;&gt;
+                Panel 1
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-lg-6&quot;&gt;
+                &lt;div class=&quot;panel panel-default lobipanel&quot; data-sortable=&quot;true&quot;&gt;
+                    &lt;div class=&quot;panel-heading&quot;&gt;
+                        &lt;div class=&quot;panel-title&quot;&gt;
+                            &lt;h4&gt;Panel title&lt;/h4&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;panel-body&quot;&gt;
+                        Panel 2
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;panel panel-default lobipanel&quot; data-sortable=&quot;true&quot;&gt;
+                    &lt;div class=&quot;panel-heading&quot;&gt;
+                        &lt;div class=&quot;panel-title&quot;&gt;
+                            &lt;h4&gt;Panel title&lt;/h4&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;panel-body&quot;&gt;
+                        Panel 3
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-lg-6&quot;&gt;
+                &lt;div class=&quot;panel panel-default lobipanel&quot; data-sortable=&quot;true&quot;&gt;
+                    &lt;div class=&quot;panel-heading&quot;&gt;
+                        &lt;div class=&quot;panel-title&quot;&gt;
+                            &lt;h4&gt;Panel title&lt;/h4&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;panel-body&quot;&gt;
+                        Panel 4
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;panel panel-default lobipanel&quot; data-sortable=&quot;true&quot;&gt;
+                    &lt;div class=&quot;panel-heading&quot;&gt;
+                        &lt;div class=&quot;panel-title&quot;&gt;
+                            &lt;h4&gt;Panel title&lt;/h4&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;panel-body&quot;&gt;
+                        Panel 5
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script src="lib/jquery.1.11.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="lib/highlight/highlight.pack.js"></script>
+    <script src="dist/js/lobipanel.js"></script>
+    <script>
+        $(function(){
+            var codes = $('.highlight code');
+            codes.each(function (ind, el) {
+                hljs.highlightBlock(el);
+            });
+            $(function () {
+                $('.lobipanel').lobiPanel();
+                $('#demoPanel11').lobiPanel();
+                $('#lobipanel-basic').lobiPanel();
+                $('#lobipanel-custom-control').lobiPanel({
+                    reload: false,
+                    close: false,
+                    editTitle: false
+                });
+                $('#lobipanel-font-awesome').lobiPanel({
+                    reload: {
+                        icon: 'fa fa-refresh'
+                    },
+                    editTitle: {
+                        icon: 'fa fa-edit',
+                        icon2: 'fa fa-save'
+                    },
+                    unpin: {
+                        icon: 'fa fa-arrows'
+                    },
+                    minimize: {
+                        icon: 'fa fa-chevron-up',
+                        icon2: 'fa fa-chevron-down'
+                    },
+                    close: {
+                        icon: 'fa fa-times-circle'
+                    },
+                    expand: {
+                        icon: 'fa fa-expand',
+                        icon2: 'fa fa-compress'
+                    }
+                });
+                $('#lobipanel-constrain-size').lobiPanel({
+                    minWidth: 300,
+                    minHeight: 300,
+                    maxWidth: 600,
+                    maxHeight: 480
+                });
+                $('#lobipanel-from-url').on('loaded.lobiPanel', function (ev, lobiPanel) {
+                    var $body = lobiPanel.$el.find('.panel-body');
+                    $body.html('<div class="highlight"><pre><code>' + $body.html() + '</code></pre></div>');
+                    hljs.highlightBlock($body.find('code')[0]);
+                }).lobiPanel({
+                    loadUrl: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css',
+                    bodyHeight: 400
+                });
+                console.log($('#lobipanel-multiple').find('.panel'));
+                $('#lobipanel-multiple').find('.panel').lobiPanel({
+                    sortable: true
+                });
+            });
+        });
+    </script>
 </body>
 </html>

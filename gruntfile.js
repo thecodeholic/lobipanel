@@ -24,13 +24,6 @@ module.exports = function(grunt){
             }
         },
         
-        concat: {
-            js: {
-                src: ['js/messageboxes.js', 'js/notifications.js'],
-                dest: 'js/<%= pkg.name %>.js'
-            }
-        },
-        
         copy: {
             js: {
                 files: [
@@ -51,12 +44,6 @@ module.exports = function(grunt){
                         dest: 'dist/css'
                     }
                 ]
-            },
-            sounds: {
-                expand: true,
-                cwd: 'sounds',
-                src: '*',
-                dest: 'dist/sounds'
             }
         },
         
@@ -80,7 +67,7 @@ module.exports = function(grunt){
         watch: {
             scripts: {
                 files: ['js/*.js'],
-                tasks: ['concat', 'copy:js', 'uglify']
+                tasks: ['copy:js', 'uglify']
             },
             css: {
                 files: 'less/*.less',
@@ -91,10 +78,9 @@ module.exports = function(grunt){
     
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     
-    grunt.registerTask('default', ['less', 'cssmin', 'concat', 'copy', 'uglify', 'watch']);
+    grunt.registerTask('default', ['less', 'cssmin', 'copy', 'uglify', 'watch']);
 };
