@@ -1,4 +1,4 @@
-# lobipanel
+# LobiPanel
 jQuery plugin for bootstrap panels. It extends panels with several common and useful functions.
 
 [View Demo](http://lobianijs.com/site/lobipanel)
@@ -9,7 +9,8 @@ LobiPanel is depended on jQuery, jQuery ui and bootstrap.
 
 #### 1. Include necessary css/js files
 
-```<!DOCTYPE html>
+```html
+<!DOCTYPE html>
 <html>
    <head>
       <!--Include this css file in the <head> tag -->
@@ -30,7 +31,5 @@ LobiPanel is depended on jQuery, jQuery ui and bootstrap.
 ```
 
 #### 2. Initialize plugin and use it
-
-...
 
 ### For documentation and examples visit the plugin's [home page](http://lobianijs.com/site/lobipanel)
