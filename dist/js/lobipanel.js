@@ -82,14 +82,24 @@ $.fn.insertAt = function(i, selector) {
     if (typeof selector === 'string'){
         object = $(selector);
     }
+
+    i = Math.min(object.children().length, i);
     if(i == 0) {
         object.prepend(this);
         return this;
     }
-    if (object.children() < i){
-        i = object.children();
-    }
+    var oldIndex = this.data('index');
+
+    this.attr('data-index', i);
     object.find(">*:nth-child(" + i + ")").after(this);
+    object.children().each(function(index, el){
+        var $el = $(el);
+        if (oldIndex < i && index > oldIndex && index <= i){
+            $el.attr('data-index', parseInt($el.data('data-index'), 10) - 1);
+        } else if (oldIndex >= i && index > i && index <= oldIndex){
+            $el.attr('data-index', parseInt($el.attr('data-index'), 10) + 1);
+        }
+    });
     return this;
 };
 
@@ -567,6 +577,33 @@ $(function(){
             }
             return options;
         };
+
+        var _applyState = function(state){
+            switch (state){
+                case 'unpinned':
+                    me.unpin();
+                    break;
+                case 'minimized':
+                    me.unpin();
+                    me.minimize();
+                    break;
+                case 'collapsed':
+                    me.minimize();
+                    break;
+                case 'fullscreen':
+                    me.toFullScreen();
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        var _applyIndex = function (index) {
+            if (index !== null){
+                me.$el.insertAt(index, me.$el.parent());
+            }
+        };
+
         var _triggerEvent = function(eventType){
             var args = Array.prototype.slice.call(arguments, 1);
             args.unshift(me);
@@ -1409,23 +1446,8 @@ $(function(){
         $heading = this.$el.find('>.panel-heading');
         $body = this.$el.find('>.panel-body');
         _init();
-        switch (this.$options.state){
-            case 'unpinned':
-                this.unpin();
-                break;
-            case 'minimized':
-                this.unpin();
-                this.minimize();
-                break;
-            case 'collapsed':
-                this.minimize();
-                break;
-            case 'fullscreen':
-                this.toFullScreen();
-                break;
-            default:
-                break;
-        }
+        _applyState(me.$options.state);
+        _applyIndex(me.$options.initialIndex);
     };
 
     $.fn.lobiPanel = function(option){
@@ -1489,6 +1511,7 @@ $(function(){
         expandAnimation: 100,
         collapseAnimation: 100,
         state: 'pinned', // pinned, unpinned, collapsed, minimized, fullscreen,
+        initialIndex: null,
         unpin: {
             icon: 'glyphicon glyphicon-move', //You can user glyphicons if you do not want to use font-awesome
             tooltip: 'Unpin'               //tooltip text, If you want to disable tooltip, set it to false
