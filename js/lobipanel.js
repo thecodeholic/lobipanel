@@ -124,11 +124,16 @@ $(function(){
 //------------------------------------------------------------------------------
         this.$el = null;
         this.$options = {};
-        this.$hasRandomId = false;
+        this.hasRandomId = false;
+        this.storage = null;
 //------------------------------------------------------------------------------
 //-----------------PRIVATE VARIABLES--------------------------------------------
 //------------------------------------------------------------------------------
-        var $heading, $body, innerId, me = this;
+        var $heading,
+            $body,
+            innerId,
+            storagePrefix = 'lobipanel_',
+            me = this;
 //------------------------------------------------------------------------------
 //-----------------PRIVATE FUNCTIONS--------------------------------------------
 //------------------------------------------------------------------------------
@@ -139,7 +144,7 @@ $(function(){
 
             var opts = _getOptionsFromAttributes();
 //            window.console.log(opts);
-            options = $.extend({}, $.fn.lobiPanel.DEFAULTS, options, opts);
+            options = $.extend({}, $.fn.lobiPanel.DEFAULTS, me.storage, options, opts);
             var objects = ['unpin', 'reload', 'expand', 'minimize', 'close', 'editTitle'];
             for (var i=0; i<objects.length; i++){
                 var prop = objects[i];
@@ -147,19 +152,13 @@ $(function(){
                     options[prop] = $.extend({}, $.fn.lobiPanel.DEFAULTS[prop], options[prop], opts[prop]);
                 }
             }
-
             return options;
         };
 
         var _init = function(){
             me.$el.addClass('lobipanel');
-            if ( ! me.$el.data('inner-id')){
-                me.$hasRandomId = true;
-                me.$el.attr('data-inner-id', Math.randomString(10));
-            }
 
             $heading.append(_generateControls());
-            innerId = me.$el.data('inner-id');
 //------------------------------------------------------------------------------
             var parent = me.$el.parent();
             _appendInnerIdToParent(parent, innerId);
@@ -563,10 +562,7 @@ $(function(){
             var options = {};
             for (var key in $.fn.lobiPanel.DEFAULTS){
                 var k = key.toDash();
-
-//                window.console.log(key, k);
                 var val = $el.data(k);
-//                window.console.log(k, val);
                 if (val !== undefined){
                     if (typeof $.fn.lobiPanel.DEFAULTS[key] !== 'object'){
                         options[key] = val;
@@ -577,7 +573,15 @@ $(function(){
             }
             return options;
         };
-
+        var _saveState = function(state){
+            if (!me.hasRandomId && me.$options.stateful){
+                me.storage.state = state;
+                _saveLocalStorage(me.storage);
+            }
+        };
+        var _saveLocalStorage = function(storage){
+            localStorage.setItem(storagePrefix+innerId, JSON.stringify(storage));
+        };
         var _applyState = function(state){
             switch (state){
                 case 'unpinned':
@@ -656,6 +660,7 @@ $(function(){
             });
             _setBodyHeight();
             _insertInParent();
+            _saveState('pinned');
             _triggerEvent("onPin");
             return me;
         };
@@ -717,6 +722,7 @@ $(function(){
             if (me.$options.resize !== 'none'){
                 me.enableResize();
             }
+            _saveState('unpinned');
             _triggerEvent('onUnpin');
             return me;
         };
@@ -756,6 +762,7 @@ $(function(){
                 $body.slideUp();
                 me.$el.find('.panel-footer').slideUp();
                 me.$el.addClass('panel-collapsed');
+                _saveState('collapsed');
                 _changeClassOfControl($heading.find('[data-func="minimize"]'));
             } else {
                 me.disableTooltips();
@@ -809,6 +816,7 @@ $(function(){
                     $('body').addClass('lobipanel-minimized');
                     var maxWidth = 'calc(100% - '+$heading.find('.dropdown-menu li>a:visible').length * $heading.find('.dropdown-menu li>a:visible').first().outerWidth()+"px)";
                     $heading.find('.panel-title').css('max-width', maxWidth);
+                    _saveState('minimized');
                     _triggerEvent("onMinimize");
                 });
             }
@@ -830,6 +838,7 @@ $(function(){
                 $body.slideDown();
                 me.$el.find('.panel-footer').slideDown();
                 me.$el.removeClass('panel-collapsed');
+                _saveState('pinned');
                 _changeClassOfControl($heading.find('[data-func="minimize"]'));
             }else{
                 me.enableTooltips();
@@ -872,6 +881,7 @@ $(function(){
                         .addClass('lobipanel-minimized');
                     var maxWidth = 'calc(100% - ' + $heading.find('.dropdown-menu li').length * $heading.find('.dropdown-menu li').first().outerWidth() + "px)";
                     $heading.find('.panel-title').css('max-width', maxWidth);
+                    _saveState('unpinned');
                     _triggerEvent("onMaximize");
                 });
             }
@@ -973,6 +983,7 @@ $(function(){
                 if (me.isPinned()){
                     _disableSorting();
                 }
+                _saveState('fullscreen');
                 _triggerEvent("onFullScreen");
             });
             return me;
@@ -1018,9 +1029,10 @@ $(function(){
                 if ( ! me.isPinned()){
                     bWidth = _calculateBodyWidth(me.getWidth());
                     bHeight = _calculateBodyHeight(me.getHeight());
+                    _saveState('unpinned');
                 }else if (me.$options.bodyHeight !== 'auto'){
-
                     bHeight = me.$options.bodyHeight;
+                    _saveState('pinned');
                 }
                 $body.css({
                     width: bWidth,
@@ -1442,6 +1454,17 @@ $(function(){
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
         this.$el = $el;
+        if ( ! me.$el.data('inner-id')){
+            me.hasRandomId = true;
+            me.$el.attr('data-inner-id', Math.randomString(10));
+        }
+
+        innerId = me.$el.data('inner-id');
+        if (!me.hasRandomId){
+            me.storage = localStorage.getItem(storagePrefix+innerId);
+            me.storage = JSON.parse(me.storage) || {};
+        }
+
         this.$options = _processInput(options);
         $heading = this.$el.find('>.panel-heading');
         $body = this.$el.find('>.panel-body');
@@ -1512,6 +1535,9 @@ $(function(){
         collapseAnimation: 100,
         state: 'pinned', // pinned, unpinned, collapsed, minimized, fullscreen,
         initialIndex: null,
+        stateful: false, // If you set this to true you must specify data-inner-id. Plugin will save (in localStorage) it's states such as
+                         // pinned, unpinned, collapsed, minimized, fullscreen, position among it's siblings
+                         // and apply them when you reload the browser
         unpin: {
             icon: 'glyphicon glyphicon-move', //You can user glyphicons if you do not want to use font-awesome
             tooltip: 'Unpin'               //tooltip text, If you want to disable tooltip, set it to false
