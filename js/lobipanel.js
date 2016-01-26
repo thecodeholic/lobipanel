@@ -110,6 +110,12 @@ $.fn.enableSelection = function() {
 $(function(){
     var LobiPanel = function($el, options) {
 //------------------------------------------------------------------------------
+//----------------PROTOTYPE VARIABLES-------------------------------------------
+//------------------------------------------------------------------------------
+        this.$el = null;
+        this.$options = {};
+        this.$hasRandomId = false;
+//------------------------------------------------------------------------------
 //-----------------PRIVATE VARIABLES--------------------------------------------
 //------------------------------------------------------------------------------
         var $heading, $body, innerId, me = this;
@@ -138,6 +144,7 @@ $(function(){
         var _init = function(){
             me.$el.addClass('lobipanel');
             if ( ! me.$el.data('inner-id')){
+                me.$hasRandomId = true;
                 me.$el.attr('data-inner-id', Math.randomString(10));
             }
 
@@ -1402,7 +1409,23 @@ $(function(){
         $heading = this.$el.find('>.panel-heading');
         $body = this.$el.find('>.panel-body');
         _init();
-//        window.console.log(me);
+        switch (this.$options.state){
+            case 'unpinned':
+                this.unpin();
+                break;
+            case 'minimized':
+                this.unpin();
+                this.minimize();
+                break;
+            case 'collapsed':
+                this.minimize();
+                break;
+            case 'fullscreen':
+                this.toFullScreen();
+                break;
+            default:
+                break;
+        }
     };
 
     $.fn.lobiPanel = function(option){
@@ -1465,6 +1488,7 @@ $(function(){
         toggleIcon: 'glyphicon glyphicon-cog',
         expandAnimation: 100,
         collapseAnimation: 100,
+        state: 'pinned', // pinned, unpinned, collapsed, minimized, fullscreen,
         unpin: {
             icon: 'glyphicon glyphicon-move', //You can user glyphicons if you do not want to use font-awesome
             tooltip: 'Unpin'               //tooltip text, If you want to disable tooltip, set it to false

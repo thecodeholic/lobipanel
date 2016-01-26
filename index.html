@@ -270,7 +270,7 @@ bodyHeight: 400
                                         </table>
                                     </div>
                                 </div>
-                                <div class="panel panel-info">
+                                <div class="panel panel-info" data-state="fullscreen">
                                     <div class="panel-heading">
                                         <div class="panel-title">
                                             <h4>Panel title</h4>
@@ -323,7 +323,7 @@ sortable: true
                 <div>
                     <h3>Initialize with <code>data-*</code> attributes</h3>
                     <div class="bs-example">
-                        <div class="panel panel-default lobipanel" data-inner-id="lobipanel-data-attributes" data-body-height="300" data-tooltips="false"
+                        <div class="panel panel-default lobipanel" data-state="collapsed" data-inner-id="lobipanel-data-attributes" data-body-height="300" data-tooltips="false"
                              data-min-width="400" data-resize="horizontal" data-close="{tooltip: 'custom'}">
                             <div class="panel-heading">
                                 <div class="panel-title">
@@ -537,11 +537,13 @@ sortable: true
             $('#demoPanel11').lobiPanel();
             $('#lobipanel-basic').lobiPanel();
             $('#lobipanel-custom-control').lobiPanel({
+                state: 'minimized',
                 reload: false,
                 close: false,
                 editTitle: false
             });
             $('#lobipanel-font-awesome').lobiPanel({
+                state: 'unpinned',
                 reload: {
                     icon: 'fa fa-refresh'
                 },
