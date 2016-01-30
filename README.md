@@ -3,6 +3,17 @@ jQuery plugin for bootstrap panels. It extends panels with several common and us
 
 [View Demo](http://lobianijs.com/site/lobipanel)
 
+### Features
+
+- Sort, drag, expand, resize, minimize bootstrap panels
+- Specify url and load content in panel from this url
+- Change the name of the panel
+- Customize action icons and action tooltips
+- Works for nested panels
+- HTML5 localStorage support
+    - Save panel state: (pinned, unpinned, collapsed, fullscreen, minimized) and apply it on page load
+    - Save panel position among siblings and apply on next time
+
 ### Installation and dependecies
 
 LobiPanel is depended on jQuery, jQuery ui and bootstrap.

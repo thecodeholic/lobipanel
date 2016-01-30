@@ -1533,8 +1533,8 @@ $(function(){
         toggleIcon: 'glyphicon glyphicon-cog',
         expandAnimation: 100,
         collapseAnimation: 100,
-        state: 'pinned', // pinned, unpinned, collapsed, minimized, fullscreen,
-        initialIndex: null,
+        state: 'pinned', // Initial state of the panel. Available options: pinned, unpinned, collapsed, minimized, fullscreen
+        initialIndex: null, // Initial index of the panel among its siblings
         stateful: false, // If you set this to true you must specify data-inner-id. Plugin will save (in localStorage) it's states such as
                          // pinned, unpinned, collapsed, minimized, fullscreen, position among it's siblings
                          // and apply them when you reload the browser
