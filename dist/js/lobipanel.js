@@ -517,7 +517,8 @@ $(function(){
             }
         };
         var _updateDataIndices = function(panel){
-            var items = panel.parent().find('> *');
+            var items = panel.parent().children();
+            console.log(items);
             items.each(function(index, el){
                 $(el).attr('data-index', index);
             });
