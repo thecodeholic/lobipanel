@@ -24,19 +24,36 @@ LobiPanel is depended on jQuery, jQuery ui and bootstrap.
 <!DOCTYPE html>
 <html>
    <head>
-      <!--Include this css file in the <head> tag -->
-      <link rel="stylesheet" href="lib/jquery-ui.min.css"/>
-      <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css"/>
-      <link rel="stylesheet" href="dist/css/lobipanel.min.css"/>
+        <!--Default installation-->
+        <link rel="stylesheet" href="lib/jquery-ui.min.css"/>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css"/>
+
+        <!--Installation using bower. Preferred!!! -->
+        <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>-->
+        <!--<link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css"/>-->
+        <!--Run `bower install font-awesome` and uncomment this line to see font awesome examples-->
+        <!--<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css"/>-->
+
+        <link rel="stylesheet" href="dist/css/lobipanel.min.css"/>
    </head>
 
-   <body>
-      ...
-      <!--Include these script files in the <head> or <body> tag-->
-      <script src="lib/jquery.1.11.min.js"></script>
-      <script src="lib/jquery-ui.min.js"></script>
-      <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-      <script src="dist/js/lobipanel.min.js"></script>
+    <body>
+        ...
+        <!--Default installation-->
+        <script src="lib/jquery.1.11.min.js"></script>
+        <script src="lib/jquery-ui.min.js"></script>
+        <script src="lib/jquery.ui.touch-punch.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+
+        <!--Installation using bower. Preferred!!! -->
+        <!--<script src="bower_components/jquery/dist/jquery.min.js"></script>-->
+        <!--<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>-->
+        <!--<script src="bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js"></script>-->
+        <!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+
+        <script src="dist/js/lobipanel.js"></script>
+
    </body>
 </html>
 ```
