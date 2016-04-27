@@ -501,6 +501,9 @@ $(function(){
                 forcePlaceholderSize: true,
                 opacity: 0.7,
                 revert: 300,
+                start: function (event, ui) {
+                	_triggerEvent('onDrag');
+                },
                 update: function (event, ui) {
                     var innerId = ui.item.data('inner-id');
                     _removeInnerIdFromParent(innerId);
