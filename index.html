@@ -617,7 +617,14 @@ $('selector').lobiPanel({
 
             $('.lobipanel').lobiPanel();
             $('#demoPanel11').lobiPanel();
-            $('#lobipanel-basic').lobiPanel();
+            $('#lobipanel-basic')
+                    .on('beforeUnpin.lobiPanel', function () {
+                        console.log("beforeClose");
+                    })
+                    .on('onClose.lobiPanel', function () {
+                        console.log("onClose");
+                    })
+                    .lobiPanel();
             $('#lobipanel-custom-control').lobiPanel({
                 reload: false,
                 close: false,
