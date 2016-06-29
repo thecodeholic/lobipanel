@@ -485,7 +485,7 @@ body.lobipanel-minimized {
 }
 .lobipanel.panel-unpin {
   overflow: hidden;
-  position: fixed;
+  position: absolute;
   z-index: 10000;
   -webkit-box-shadow: 2px 2px 15px 5px rgba(10, 10, 10, 0.5);
   box-shadow: 2px 2px 15px 5px rgba(10, 10, 10, 0.5);

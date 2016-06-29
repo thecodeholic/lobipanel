@@ -691,7 +691,7 @@ $(function () {
 //                var left = Math.round($(window).width() / 2 - width / 2);
                 var left = Math.max(0, (($(window).width() - me.$el.outerWidth()) / 2));
 //                var top = Math.round($(window).height() / 2 - height / 2);
-                var top = Math.max(0, (($(window).height() - me.$el.outerHeight()) / 2));
+                var top = Math.max(0, ($(document).scrollTop() + ($(window).height() - me.$el.outerHeight()) / 2));
                 me.$el.css({
                     left: left,
                     top: top,
@@ -711,7 +711,7 @@ $(function () {
             var panelWidth = _getAvailableWidth(me.$el.width());
             var panelHeight = _getAvailableHeight(me.$el.height());
             me.$el.css({
-                position: 'fixed',
+                position: 'absolute',
                 width: panelWidth,
                 height: panelHeight
             });
