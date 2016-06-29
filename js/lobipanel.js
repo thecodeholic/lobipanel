@@ -582,6 +582,7 @@ $(function () {
         var _saveState = function (state) {
             if (!me.hasRandomId && me.$options.stateful) {
                 me.storage.state = state;
+                console.log(me.storage)
                 _saveLocalStorage(me.storage);
             }
         };
@@ -1035,10 +1036,13 @@ $(function () {
                 if (!me.isPinned()) {
                     bWidth = _calculateBodyWidth(me.getWidth());
                     bHeight = _calculateBodyHeight(me.getHeight());
-                    _saveState('unpinned');
                 } else if (me.$options.bodyHeight !== 'auto') {
                     bHeight = me.$options.bodyHeight;
-                    _saveState('pinned');
+                }
+                if (me.$options.bodyHeight !== 'auto'){
+                    _saveState('pinnned');
+                } else {
+                    _saveState('unpinned');
                 }
                 $body.css({
                     width: bWidth,
