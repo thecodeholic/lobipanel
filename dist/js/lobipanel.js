@@ -1068,7 +1068,6 @@ $(function () {
          */
         this.close = function () {
             _triggerEvent('beforeClose');
-            console.log("before");
             me.$el.hide(100, function () {
                 if (me.isOnFullScreen()) {
                     $('body').css('overflow', 'auto');
@@ -1213,7 +1212,6 @@ $(function () {
          * @returns {LobiPanel}
          */
         this.enableDrag = function () {
-            console.log("enable drag www");
             me.$el.draggable({
                 handle: '.panel-heading',
                 containment: me.$options.constrain,
@@ -1429,6 +1427,7 @@ $(function () {
             $heading.find('.panel-title').html(input.val());
             input.remove();
             _changeClassOfControl($heading.find('[data-func="editTitle"]'));
+            _triggerEvent('onTitleChange', input.val());
             return me;
         };
         /**

@@ -624,6 +624,10 @@ $('selector').lobiPanel({
                     .on('onClose.lobiPanel', function () {
                         console.log("onClose");
                     })
+                    .on('onTitleChange.lobiPanel', function () {
+                        console.log(this, arguments);
+
+                    })
                     .lobiPanel();
             $('#lobipanel-custom-control').lobiPanel({
                 reload: false,
