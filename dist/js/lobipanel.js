@@ -518,7 +518,6 @@ $(function(){
         };
         var _updateDataIndices = function(panel){
             var items = panel.parent().children();
-            console.log(items);
             items.each(function(index, el){
                 $(el).attr('data-index', index);
             });
@@ -1207,8 +1206,16 @@ $(function(){
          * @returns {LobiPanel}
          */
         this.enableDrag = function(){
+            console.log("enable drag www");
             me.$el.draggable({
-                handle: '.panel-heading'
+                handle: '.panel-heading',
+                containment: me.$options.constrain,
+                start: function(){
+                    me.$el.css('position', 'absolute');
+                },
+                end: function(){
+                    me.$el.css('position', '');
+                }
             });
             return me;
         };
@@ -1539,6 +1546,7 @@ $(function(){
         stateful: false, // If you set this to true you must specify data-inner-id. Plugin will save (in localStorage) it's states such as
                          // pinned, unpinned, collapsed, minimized, fullscreen, position among it's siblings
                          // and apply them when you reload the browser
+        constrain: 'document', // 'parent', 'document', 'window'
         unpin: {
             icon: 'glyphicon glyphicon-move', //You can user glyphicons if you do not want to use font-awesome
             tooltip: 'Unpin'               //tooltip text, If you want to disable tooltip, set it to false

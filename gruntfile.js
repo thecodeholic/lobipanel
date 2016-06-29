@@ -51,7 +51,7 @@ module.exports = function(grunt){
             options: {
                 mangle: false
             },
-            my_target : {
+            js : {
                 files: [
                     {
                         expand: true,
@@ -65,6 +65,14 @@ module.exports = function(grunt){
         },
         
         watch: {
+            scriptsDev: {
+                files: ['js/*.js'],
+                tasks: ['copy:js']
+            },
+            cssDev: {
+                files: 'less/*.less',
+                tasks: ['less', 'copy:css']
+            },
             scripts: {
                 files: ['js/*.js'],
                 tasks: ['copy:js', 'uglify']
@@ -82,5 +90,6 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     
+    grunt.registerTask('dev', ['less', 'copy', 'watch:scriptsDev', 'watch:cssDev']);
     grunt.registerTask('default', ['less', 'cssmin', 'copy', 'uglify', 'watch']);
 };
