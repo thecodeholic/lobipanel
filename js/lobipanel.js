@@ -148,6 +148,11 @@ $(function () {
                 options = {};
             }
 
+
+            if (!me.hasRandomId) {
+                me.storage = localStorage.getItem(storagePrefix + innerId);
+                me.storage = JSON.parse(me.storage) || {};
+            }
             var opts = _getOptionsFromAttributes();
 //            window.console.log(opts);
             options = $.extend({}, $.fn.lobiPanel.DEFAULTS, me.storage, options, opts);
@@ -580,9 +585,10 @@ $(function () {
         }
         function _saveState (state, params) {
             if (!me.hasRandomId && me.$options.stateful) {
+                console.log("Save state ", state, params);
                 me.storage.state = state;
                 if (params) {
-                    me.storage.params = params;
+                    me.storage.stateParams = params;
                 }
                 _saveLocalStorage(me.storage);
             }
@@ -590,10 +596,13 @@ $(function () {
         function _saveLocalStorage (storage) {
             localStorage.setItem(storagePrefix + innerId, JSON.stringify(storage));
         }
-        function _applyState (state) {
+        function _applyState (state, params) {
+            console.log(state, params);
             switch (state) {
                 case 'unpinned':
                     me.unpin();
+                    me.setPosition(params.left, params.top);
+                    me.setSize(params.width, params.height);
                     break;
                 case 'minimized':
                     me.unpin();
@@ -687,17 +696,13 @@ $(function () {
             } else {
                 var width = me.$el.width();
                 var height = me.$el.height();
-//                var left = Math.round($(window).width() / 2 - width / 2);
                 var left = Math.max(0, (($(window).width() - me.$el.outerWidth()) / 2));
-//                var top = Math.round($(window).height() / 2 - height / 2);
                 var top = Math.max(0, ($(document).scrollTop() + ($(window).height() - me.$el.outerHeight()) / 2));
                 me.$el.css({
                     left: left,
                     top: top,
                     width: width,
                     height: height
-//                    right: $(window).width() - left - width + 2,
-//                    bottom: $(window).height() - top - height + 2
                 });
             }
             var res = _getMaxZIndex();
@@ -728,7 +733,7 @@ $(function () {
             if (me.$options.resize !== 'none') {
                 me.enableResize();
             }
-            _saveState('unpinned');
+            _saveState('unpinned', {top: top, left: left, width: panelWidth, height: panelHeight});
             _triggerEvent('onUnpin');
             return me;
         };
@@ -1477,16 +1482,12 @@ $(function () {
         }
 
         innerId = me.$el.data('inner-id');
-        if (!me.hasRandomId) {
-            me.storage = localStorage.getItem(storagePrefix + innerId);
-            me.storage = JSON.parse(me.storage) || {};
-        }
 
         this.$options = _processInput(options);
         $heading = this.$el.find('>.panel-heading');
         $body = this.$el.find('>.panel-body');
         _init();
-        _applyState(me.$options.state);
+        _applyState(me.$options.state, me.$options.stateParams);
         _applyIndex(me.$options.initialIndex);
     };
 
