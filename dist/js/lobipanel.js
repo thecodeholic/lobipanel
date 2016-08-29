@@ -143,7 +143,7 @@ $(function () {
 //------------------------------------------------------------------------------
 //-----------------PRIVATE FUNCTIONS--------------------------------------------
 //------------------------------------------------------------------------------
-        var _processInput = function (options) {
+        function _processInput (options) {
             if (!options) {
                 options = {};
             }
@@ -159,9 +159,8 @@ $(function () {
                 }
             }
             return options;
-        };
-
-        var _init = function () {
+        }
+        function _init () {
             me.$el.addClass('lobipanel');
 
             $heading.append(_generateControls());
@@ -180,8 +179,8 @@ $(function () {
             $heading.find('.panel-title').css('max-width', maxWidth);
 
             _triggerEvent("init");
-        };
-        var _generateControls = function () {
+        }
+        function _generateControls () {
             var dropdown = _generateDropdown();
             var menu = dropdown.find('.dropdown-menu');
             if (me.$options.editTitle !== false) {
@@ -207,13 +206,13 @@ $(function () {
                 ev.stopPropagation();
             });
             return dropdown;
-        };
-        var _generateDropdown = function () {
+        }
+        function _generateDropdown () {
             return $('<div class="dropdown"></div>')
                 .append('<ul class="dropdown-menu dropdown-menu-right"></ul>')
                 .append('<div class="dropdown-toggle" data-toggle="dropdown"><span class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + me.$options.toggleIcon + '"></div>');
-        };
-        var _generateEditTitle = function () {
+        }
+        function _generateEditTitle () {
             var options = me.$options.editTitle;
             var control = $('<a data-func="editTitle"></a>');
             control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
@@ -224,8 +223,8 @@ $(function () {
 
             _onEditTitleClick(control);
             return $('<li></li>').append(control);
-        };
-        var _onEditTitleClick = function (control) {
+        }
+        function _onEditTitleClick (control) {
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
@@ -238,8 +237,8 @@ $(function () {
                     me.startTitleEditing();
                 }
             });
-        };
-        var _generateUnpin = function () {
+        }
+        function _generateUnpin () {
             var options = me.$options.unpin;
             var control = $('<a data-func="unpin"></a>');
             control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
@@ -249,16 +248,16 @@ $(function () {
             }
             _onUnpinClick(control);
             return $('<li></li>').append(control);
-        };
-        var _onUnpinClick = function (control) {
+        }
+        function _onUnpinClick (control) {
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
             control.on('click', function () {
                 me.togglePin();
             });
-        };
-        var _generateReload = function () {
+        }
+        function _generateReload () {
             var options = me.$options.reload;
             var control = $('<a data-func="reload"></a>');
             control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
@@ -268,8 +267,8 @@ $(function () {
             }
             _onReloadClick(control);
             return $('<li></li>').append(control);
-        };
-        var _onReloadClick = function (control) {
+        }
+        function _onReloadClick (control) {
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
@@ -280,8 +279,8 @@ $(function () {
                     }
                 });
             });
-        };
-        var _generateMinimize = function () {
+        }
+        function _generateMinimize () {
             var options = me.$options.minimize;
             var control = $('<a data-func="minimize"></a>');
             control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
@@ -291,8 +290,8 @@ $(function () {
             }
             _onMinimizeClick(control);
             return $('<li></li>').append(control);
-        };
-        var _onMinimizeClick = function (control) {
+        }
+        function _onMinimizeClick (control) {
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
@@ -300,8 +299,8 @@ $(function () {
                 ev.stopPropagation();
                 me.toggleMinimize();
             });
-        };
-        var _generateExpand = function () {
+        }
+        function _generateExpand () {
             var options = me.$options.expand;
             var control = $('<a data-func="expand"></a>');
             control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
@@ -311,8 +310,8 @@ $(function () {
             }
             _onExpandClick(control);
             return $('<li></li>').append(control);
-        };
-        var _onExpandClick = function (control) {
+        }
+        function _onExpandClick (control) {
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
@@ -320,8 +319,8 @@ $(function () {
                 ev.stopPropagation();
                 me.toggleSize();
             });
-        };
-        var _generateClose = function () {
+        }
+        function _generateClose () {
             var options = me.$options.close;
             var control = $('<a data-func="close"></a>');
             control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
@@ -331,8 +330,8 @@ $(function () {
             }
             _onCloseClick(control);
             return $('<li></li>').append(control);
-        };
-        var _onCloseClick = function (control) {
+        }
+        function _onCloseClick (control) {
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
@@ -341,8 +340,8 @@ $(function () {
                 control.tooltip('hide');
                 me.close();
             });
-        };
-        var _getMaxZIndex = function () {
+        }
+        function _getMaxZIndex () {
             var panels = $('.lobipanel.panel-unpin:not(.panel-minimized.panel-expanded)'),
                 style,
                 max,
@@ -376,8 +375,8 @@ $(function () {
                 "id": id,
                 "z-index": parseInt(max, 10)
             };
-        };
-        var _onPanelClick = function () {
+        }
+        function _onPanelClick () {
             me.$el.on('mousedown.lobiPanel', function () {
                 if (me.isPinned() ||
                     me.isMinimized() ||
@@ -386,19 +385,19 @@ $(function () {
                 }
                 me.bringToFront();
             });
-        };
-        var _offPanelClick = function () {
+        }
+        function _offPanelClick () {
             me.$el.off('mousedown.lobiPanel');
-        };
-        var _changeClassOfControl = function (el) {
+        }
+        function _changeClassOfControl (el) {
             el = $(el);
             var opts = me.$options[el.attr('data-func')];
             if (!opts.icon) {
                 return;
             }
             el.find('.' + LobiPanel.PRIVATE_OPTIONS.iconClass).toggleClass(opts.icon).toggleClass(opts.icon2);
-        };
-        var _getFooterForMinimizedPanels = function () {
+        }
+        function _getFooterForMinimizedPanels () {
             //we grab footer where minimized panels should go
             var minimizedCtr = $('.' + LobiPanel.PRIVATE_OPTIONS.toolbarClass);
             //if panel does not exist we create it and append to body
@@ -407,17 +406,17 @@ $(function () {
                 $('body').append(minimizedCtr);
             }
             return minimizedCtr;
-        };
-        var _expandOnHeaderClick = function () {
+        }
+        function _expandOnHeaderClick () {
             $heading.on('click.lobiPanel', function () {
                 me.maximize();
                 me.bringToFront();
             });
-        };
-        var _removeExpandOnHeaderClick = function () {
+        }
+        function _removeExpandOnHeaderClick () {
             $heading.off('click.lobiPanel');
-        };
-        var _getAvailableWidth = function (calcWidth) {
+        }
+        function _getAvailableWidth (calcWidth) {
             if (me.$options.maxWidth) {
                 calcWidth = Math.min(calcWidth, me.$options.maxWidth);
             }
@@ -425,8 +424,8 @@ $(function () {
                 calcWidth = Math.max(calcWidth, me.$options.minWidth);
             }
             return calcWidth;
-        };
-        var _getAvailableHeight = function (calcHeight) {
+        }
+        function _getAvailableHeight (calcHeight) {
             if (me.$options.maxHeight) {
                 calcHeight = Math.min(calcHeight, me.$options.maxHeight);
             }
@@ -434,14 +433,14 @@ $(function () {
                 calcHeight = Math.max(calcHeight, me.$options.minHeight);
             }
             return calcHeight;
-        };
-        var _calculateBodyHeight = function (h) {
+        }
+        function _calculateBodyHeight (h) {
             return h - $heading.outerHeight() - me.$el.find('.panel-footer').outerHeight();
-        };
-        var _calculateBodyWidth = function (w) {
+        }
+        function _calculateBodyWidth (w) {
             return w - 2;
-        };
-        var _appendInnerIdToParent = function (parent, innerId) {
+        }
+        function _appendInnerIdToParent (parent, innerId) {
             //If this is first lobipanel element of its parent
             if (parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr) === undefined) {
                 parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr, innerId);
@@ -456,13 +455,13 @@ $(function () {
                 parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr, innerIds + " " + innerId);
             }
             me.$el.attr('data-index', me.$el.index());
-        };
-        var _insertInParent = function () {
+        }
+        function _insertInParent () {
             //find its parent element
             var parent = $('[' + LobiPanel.PRIVATE_OPTIONS.parentAttr + '~=' + innerId + ']');
             me.$el.insertAt(me.$el.attr('data-index'), parent);
-        };
-        var _generateWindow8Spinner = function () {
+        }
+        function _generateWindow8Spinner () {
             var template = ['<div class="spinner spinner-windows8">',
                 '<div class="wBall">',
                 '<div class="wInnerBall">',
@@ -486,8 +485,8 @@ $(function () {
                 '</div>',
                 '</div>'].join("");
             return $('<div class="spinner-wrapper">' + template + '</div>');
-        };
-        var _enableSorting = function () {
+        }
+        function _enableSorting () {
             var parent = me.$el.parent();
             if (parent.hasClass('ui-sortable')) {
                 parent.sortable("destroy");
@@ -515,30 +514,30 @@ $(function () {
                     _triggerEvent('dragged');
                 }
             });
-        };
-        var _disableSorting = function () {
+        }
+        function _disableSorting () {
             var parent = me.$el.parent();
             if (parent.hasClass('ui-sortable')) {
                 parent.sortable("destroy");
             }
-        };
-        var _updateDataIndices = function (panel) {
+        }
+        function _updateDataIndices (panel) {
             var items = panel.parent().children();
             items.each(function (index, el) {
                 $(el).attr('data-index', index);
             });
-        };
-        var _removeInnerIdFromParent = function (innerId) {
+        }
+        function _removeInnerIdFromParent (innerId) {
             var parent = $('[' + LobiPanel.PRIVATE_OPTIONS.parentAttr + '~=' + innerId + ']');
             var innerIds = parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr).replace(innerId, '').trim().replace(/\s{2,}/g, ' ');
             parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr, innerIds);
-        };
-        var _onToggleIconsBtnClick = function () {
+        }
+        function _onToggleIconsBtnClick () {
             $heading.find('.toggle-controls').on('click.lobiPanel', function () {
                 me.$el.toggleClass("controls-expanded");
             });
-        };
-        var _adjustForScreenSize = function () {
+        }
+        function _adjustForScreenSize () {
             me.disableTooltips();
             if ($(window).width() > 768 && me.$options.tooltips) {
                 me.enableTooltips();
@@ -549,21 +548,21 @@ $(function () {
                     height: _calculateBodyHeight(me.$el.height())
                 });
             }
-        };
-        var _enableResponsiveness = function () {
+        }
+        function _enableResponsiveness () {
             $(window).on('resize.lobiPanel', function () {
                 _adjustForScreenSize();
             });
-        };
-        var _setBodyHeight = function () {
+        }
+        function _setBodyHeight () {
             if (me.$options.bodyHeight !== 'auto') {
                 $body.css({
                     'height': me.$options.bodyHeight,
                     overflow: 'auto'
                 });
             }
-        };
-        var _getOptionsFromAttributes = function () {
+        }
+        function _getOptionsFromAttributes () {
             var $el = me.$el;
             var options = {};
             for (var key in $.fn.lobiPanel.DEFAULTS) {
@@ -578,18 +577,20 @@ $(function () {
                 }
             }
             return options;
-        };
-        var _saveState = function (state) {
+        }
+        function _saveState (state, params) {
             if (!me.hasRandomId && me.$options.stateful) {
                 me.storage.state = state;
-                console.log(me.storage)
+                if (params) {
+                    me.storage.params = params;
+                }
                 _saveLocalStorage(me.storage);
             }
-        };
-        var _saveLocalStorage = function (storage) {
+        }
+        function _saveLocalStorage (storage) {
             localStorage.setItem(storagePrefix + innerId, JSON.stringify(storage));
-        };
-        var _applyState = function (state) {
+        }
+        function _applyState (state) {
             switch (state) {
                 case 'unpinned':
                     me.unpin();
@@ -607,19 +608,17 @@ $(function () {
                 default:
                     break;
             }
-        };
-
-        var _applyIndex = function (index) {
+        }
+        function _applyIndex (index) {
             if (index !== null) {
                 me.$el.insertAt(index, me.$el.parent());
             }
-        };
-
-        var _triggerEvent = function (eventType) {
+        }
+        function _triggerEvent (eventType) {
             var args = Array.prototype.slice.call(arguments, 1);
             args.unshift(me);
             me.$el.trigger(eventType + '.lobiPanel', args);
-        };
+        }
 //------------------------------------------------------------------------------
 //----------------PROTOTYPE FUNCTIONS-------------------------------------------
 //------------------------------------------------------------------------------
@@ -1254,7 +1253,7 @@ $(function () {
                 handles = 'all';
             }
             if (!handles) {
-                return;
+                return me;
             }
             me.$el.resizable({
                 minWidth: me.$options.minWidth,
