@@ -124,11 +124,7 @@ $.fn.enableSelection = function () {
 };
 
 $(function () {
-    var $heading,
-            $body,
-            STORAGE_PREFIX = 'lobipanel_',
-            me = this;
-
+    var STORAGE_PREFIX = 'lobipanel_';
 
     var LobiPanel = function ($el, options) {
         var me = this;
@@ -146,8 +142,8 @@ $(function () {
         this.innerId = me.$el.data('inner-id');
 
         this.$options = me._processInput(options);
-        $heading = this.$el.find('>.panel-heading');
-        $body = this.$el.find('>.panel-body');
+        me.$heading = this.$el.find('>.panel-heading');
+        me.$body = this.$el.find('>.panel-body');
         me._init();
         me._applyState(me.$options.state, me.$options.stateParams);
         me._applyIndex(me.$options.initialIndex);
@@ -181,7 +177,7 @@ $(function () {
             var me = this;
             me.$el.addClass('lobipanel');
 
-            $heading.append(me._generateControls());
+            me.$heading.append(me._generateControls());
 //------------------------------------------------------------------------------
             var parent = me.$el.parent();
             me._appendInnerIdToParent(parent, me.innerId);
@@ -193,8 +189,8 @@ $(function () {
             if (me.$options.autoload) {
                 me.load();
             }
-            var maxWidth = 'calc(100% - ' + $heading.find('.dropdown-menu').children().length * $heading.find('.dropdown-menu li').first().outerWidth() + "px)";
-            $heading.find('.panel-title').css('max-width', maxWidth);
+            var maxWidth = 'calc(100% - ' + me.$heading.find('.dropdown-menu').children().length * me.$heading.find('.dropdown-menu li').first().outerWidth() + "px)";
+            me.$heading.find('.panel-title').css('max-width', maxWidth);
 
             me._triggerEvent("init");
         },
@@ -228,7 +224,7 @@ $(function () {
             var me = this;
             me._triggerEvent("beforePin");
             //hide the tooltip
-            $heading.find('[data-func="unpin"]').tooltip('hide');
+            me.$heading.find('[data-func="unpin"]').tooltip('hide');
             //disable resize functionality
             me.disableResize();
             me.disableDrag();
@@ -241,7 +237,7 @@ $(function () {
                 .attr('old-style', me.$el.attr('style'))
                 .removeAttr('style')
                 .css('position', 'relative');
-            $body.css({
+            me.$body.css({
                 width: '',
                 height: ''
             });
@@ -264,7 +260,7 @@ $(function () {
                 return me;
             }
             me._disableSorting();
-            $heading.find('[data-func="unpin"]').tooltip('hide');
+            me.$heading.find('[data-func="unpin"]').tooltip('hide');
             if (me.$el.attr('old-style')) {
                 me.$el.attr('style', me.$el.attr('old-style'));
             } else {
@@ -296,7 +292,7 @@ $(function () {
             //we give .panel-body to width and height in order .panel-body to start scroling
             var bHeight = me._calculateBodyHeight(panelHeight);
             var bWidth = me._calculateBodyWidth(panelWidth);
-            $body.css({
+            me.$body.css({
                 width: bWidth,
                 height: bHeight
             });
@@ -350,14 +346,14 @@ $(function () {
                 return me;
             }
             if (me.isPinned()) {
-                $body.slideUp();
+                me.$body.slideUp();
                 me.$el.find('.panel-footer').slideUp();
                 me.$el.addClass('panel-collapsed');
                 me._saveState('collapsed');
-                me._changeClassOfControl($heading.find('[data-func="minimize"]'));
+                me._changeClassOfControl(me.$heading.find('[data-func="minimize"]'));
             } else {
                 me.disableTooltips();
-                $heading.find('[data-func="minimize"]').tooltip('hide');
+                me.$heading.find('[data-func="minimize"]').tooltip('hide');
                 //get footer where we need to put panel
                 var footer = me._getFooterForMinimizedPanels();
                 //find other panels which are already inside footer
@@ -405,8 +401,8 @@ $(function () {
                     //so we append panel into footer
                     footer.append(me.$el);
                     $('body').addClass('lobipanel-minimized');
-                    var maxWidth = 'calc(100% - ' + $heading.find('.dropdown-menu li>a:visible').length * $heading.find('.dropdown-menu li>a:visible').first().outerWidth() + "px)";
-                    $heading.find('.panel-title').css('max-width', maxWidth);
+                    var maxWidth = 'calc(100% - ' + me.$heading.find('.dropdown-menu li>a:visible').length * me.$heading.find('.dropdown-menu li>a:visible').first().outerWidth() + "px)";
+                    me.$heading.find('.panel-title').css('max-width', maxWidth);
                     me._saveState('minimized');
                     me._triggerEvent("onMinimize");
                 });
@@ -428,11 +424,11 @@ $(function () {
                 return me;
             }
             if (me.isPinned()) {
-                $body.slideDown();
+                me.$body.slideDown();
                 me.$el.find('.panel-footer').slideDown();
                 me.$el.removeClass('panel-collapsed');
                 me._saveState('pinned');
-                me._changeClassOfControl($heading.find('[data-func="minimize"]'));
+                me._changeClassOfControl(me.$heading.find('[data-func="minimize"]'));
             } else {
                 me.enableTooltips();
                 //we get css style which was saved before minimization
@@ -472,8 +468,8 @@ $(function () {
                     }
                     $('body').removeClass('lobipanel-minimized')
                         .addClass('lobipanel-minimized');
-                    var maxWidth = 'calc(100% - ' + $heading.find('.dropdown-menu li').length * $heading.find('.dropdown-menu li').first().outerWidth() + "px)";
-                    $heading.find('.panel-title').css('max-width', maxWidth);
+                    var maxWidth = 'calc(100% - ' + me.$heading.find('.dropdown-menu li').length * me.$heading.find('.dropdown-menu li').first().outerWidth() + "px)";
+                    me.$heading.find('.panel-title').css('max-width', maxWidth);
                     me._saveState('unpinned');
                     me._triggerEvent("onMaximize");
                 });
@@ -517,8 +513,8 @@ $(function () {
             if (me.$el.hasClass("panel-collapsed")) {
                 return me;
             }
-            me._changeClassOfControl($heading.find('[data-func="expand"]'));
-            $heading.find('[data-func="expand"]').tooltip('hide');
+            me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
+            me.$heading.find('[data-func="expand"]').tooltip('hide');
             var res = me._getMaxZIndex();
             //if panel is pinned or minimized, its position is not absolute and
             //animation will not work correctly so we change its position and
@@ -541,7 +537,7 @@ $(function () {
                     footer.remove();
                 }
             } else {
-                $body.css({
+                me.$body.css({
                     width: '',
                     height: ''
                 });
@@ -574,9 +570,9 @@ $(function () {
                 });
                 me.$el.addClass('panel-expanded');
                 $('body').css('overflow', 'hidden');
-                $body.css({
-                    width: _calculateBodyWidth(me.$el.width()),
-                    height: _calculateBodyHeight(me.$el.height())
+                me.$body.css({
+                    width: me._calculateBodyWidth(me.$el.width()),
+                    height: me._calculateBodyHeight(me.$el.height())
                 });
                 me.disableDrag();
                 if (me.isPinned()) {
@@ -596,8 +592,8 @@ $(function () {
         toSmallSize: function () {
             var me = this;
             me._triggerEvent("beforeSmallSize");
-            me._changeClassOfControl($heading.find('[data-func="expand"]'));
-            $heading.find('[data-func="expand"]').tooltip('hide');
+            me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
+            me.$heading.find('[data-func="expand"]').tooltip('hide');
             var css = me.$el.attr('old-style').getCss();
             //we get css properties from old-style (saved before expanding)
             //and we animate panel to this css properties
@@ -638,7 +634,7 @@ $(function () {
                 } else {
                     me._saveState('unpinned');
                 }
-                $body.css({
+                me.$body.css({
                     width: bWidth,
                     height: bHeight
                 });
@@ -720,7 +716,7 @@ $(function () {
             me.$el.animate({
                 width: w
             }, 100);
-            $body.animate({
+            me.$body.animate({
                 width: bWidth
             }, 100);
             return me;
@@ -741,7 +737,7 @@ $(function () {
             me.$el.animate({
                 height: h
             }, 100);
-            $body.animate({
+            me.$body.animate({
                 height: bHeight
             }, 100);
             return me;
@@ -765,7 +761,7 @@ $(function () {
                 height: h,
                 width: w
             }, 100);
-            $body.animate({
+            me.$body.animate({
                 height: bHeight,
                 width: bWidth
             }, 100);
@@ -893,7 +889,7 @@ $(function () {
                 resize: function () {
                     var bHeight = me._calculateBodyHeight(me.$el.height());
                     var bWidth = me._calculateBodyWidth(me.$el.width());
-                    $body.css({
+                    me.$body.css({
                         width: bWidth,
                         height: bHeight
                     });
@@ -981,7 +977,7 @@ $(function () {
             }
             me._triggerEvent("beforeLoad");
             me.startLoading();
-            $body.load(url, data, function (result, status, xhr) {
+            me.$body.load(url, data, function (result, status, xhr) {
                 if (callback && typeof callback === 'function') {
                     me.callback(result, status, xhr);
                 }
@@ -1007,7 +1003,7 @@ $(function () {
                 .removeAttr('data-inner-id')
                 .removeAttr('data-index')
                 .removeData('lobiPanel');
-            $heading.find('.dropdown').remove();
+            me.$heading.find('.dropdown').remove();
             return me.$el;
         },
 
@@ -1018,7 +1014,7 @@ $(function () {
          */
         startTitleEditing: function () {
             var me = this;
-            var title = $heading.find('.panel-title').text().trim();
+            var title = me.$heading.find('.panel-title').text().trim();
             var input = $('<input value="' + title + '"/>');
             input.on('keydown', function (ev) {
                 if (ev.which === 13) {
@@ -1027,12 +1023,12 @@ $(function () {
                     me.cancelTitleEditing();
                 }
             });
-            $heading.find('.panel-title')
+            me.$heading.find('.panel-title')
                 .data('old-title', title)
                 .html("").append(input);
             input[0].focus();
             input[0].select();
-            me._changeClassOfControl($heading.find('[data-func="editTitle"]'));
+            me._changeClassOfControl(me.$heading.find('[data-func="editTitle"]'));
             return me;
         },
 
@@ -1043,7 +1039,7 @@ $(function () {
          */
         isTitleEditing: function () {
             var me = this;
-            return $heading.find('.panel-title input').length > 0;
+            return me.$heading.find('.panel-title input').length > 0;
         },
 
         /**
@@ -1053,10 +1049,10 @@ $(function () {
          */
         cancelTitleEditing: function () {
             var me = this;
-            var title = $heading.find('.panel-title');
+            var title = me.$heading.find('.panel-title');
             title.html(title.data('old-title'))
                 .find('input').remove();
-            me._changeClassOfControl($heading.find('[data-func="editTitle"]'));
+            me._changeClassOfControl(me.$heading.find('[data-func="editTitle"]'));
             return me;
         },
 
@@ -1067,10 +1063,10 @@ $(function () {
          */
         finishTitleEditing: function () {
             var me = this;
-            var input = $heading.find('input');
-            $heading.find('.panel-title').html(input.val());
+            var input = me.$heading.find('input');
+            me.$heading.find('.panel-title').html(input.val());
             input.remove();
-            me._changeClassOfControl($heading.find('[data-func="editTitle"]'));
+            me._changeClassOfControl(me.$heading.find('[data-func="editTitle"]'));
             me._triggerEvent('onTitleChange', input.val());
             return me;
         },
@@ -1085,7 +1081,7 @@ $(function () {
             if ($(window).width() < 768) {
                 return me;
             }
-            var controls = $heading.find('.dropdown-menu>li>a');
+            var controls = me.$heading.find('.dropdown-menu>li>a');
             controls.each(function (index, el) {
                 var $el = $(el);
                 $el.attr('data-toggle', 'tooltip')
@@ -1109,7 +1105,7 @@ $(function () {
          */
         disableTooltips: function () {
             var me = this;
-            $heading.find('.dropdown-menu>li>a').tooltip('destroy');
+            me.$heading.find('.dropdown-menu>li>a').tooltip('destroy');
             return me;
         },
 
@@ -1118,22 +1114,22 @@ $(function () {
             var dropdown = me._generateDropdown();
             var menu = dropdown.find('.dropdown-menu');
             if (me.$options.editTitle !== false) {
-                menu.append(_generateEditTitle());
+                menu.append(me._generateEditTitle());
             }
             if (me.$options.unpin !== false) {
-                menu.append(_generateUnpin());
+                menu.append(me._generateUnpin());
             }
             if (me.$options.reload !== false) {
-                menu.append(_generateReload());
+                menu.append(me._generateReload());
             }
             if (me.$options.minimize !== false) {
-                menu.append(_generateMinimize());
+                menu.append(me._generateMinimize());
             }
             if (me.$options.expand !== false) {
-                menu.append(_generateExpand());
+                menu.append(me._generateExpand());
             }
             if (me.$options.close !== false) {
-                menu.append(_generateClose());
+                menu.append(me._generateClose());
             }
             menu.find('>li>a').on('click', function (ev) {
                 ev.preventDefault();
@@ -1167,7 +1163,7 @@ $(function () {
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
-                $heading.find('[data-func="editTitle"]').tooltip('hide');
+                me.$heading.find('[data-func="editTitle"]').tooltip('hide');
                 if (me.isTitleEditing()) {
                     me.finishTitleEditing();
                 } else {
@@ -1361,14 +1357,14 @@ $(function () {
         },
         _expandOnHeaderClick: function () {
             var me = this;
-            $heading.on('click.lobiPanel', function () {
+            me.$heading.on('click.lobiPanel', function () {
                 me.maximize();
                 me.bringToFront();
             });
         },
         _removeExpandOnHeaderClick: function () {
             var me = this;
-            $heading.off('click.lobiPanel');
+            me.$heading.off('click.lobiPanel');
         },
         _getAvailableWidth: function (calcWidth) {
             var me = this;
@@ -1392,7 +1388,7 @@ $(function () {
         },
         _calculateBodyHeight: function (h) {
             var me = this;
-            return h - $heading.outerHeight() - me.$el.find('.panel-footer').outerHeight();
+            return h - me.$heading.outerHeight() - me.$el.find('.panel-footer').outerHeight();
         },
         _calculateBodyWidth: function (w) {
             var me = this;
@@ -1418,7 +1414,7 @@ $(function () {
         _insertInParent: function () {
             var me = this;
             //find its parent element
-            var parent = $('[' + LobiPanel.PRIVATE_OPTIONS.parentAttr + '~=' + innerId + ']');
+            var parent = $('[' + LobiPanel.PRIVATE_OPTIONS.parentAttr + '~=' + me.innerId + ']');
             me.$el.insertAt(me.$el.attr('data-index'), parent);
         },
         _generateWindow8Spinner: function () {
@@ -1499,7 +1495,7 @@ $(function () {
         },
         _onToggleIconsBtnClick: function () {
             var me = this;
-            $heading.find('.toggle-controls').on('click.lobiPanel', function () {
+            me.$heading.find('.toggle-controls').on('click.lobiPanel', function () {
                 me.$el.toggleClass("controls-expanded");
             });
         },
@@ -1510,7 +1506,7 @@ $(function () {
                 me.enableTooltips();
             }
             if (me.isOnFullScreen()) {
-                $body.css({
+                me.$body.css({
                     width: _calculateBodyWidth(me.$el.width()),
                     height: _calculateBodyHeight(me.$el.height())
                 });
@@ -1525,7 +1521,7 @@ $(function () {
         _setBodyHeight: function () {
             var me = this;
             if (me.$options.bodyHeight !== 'auto') {
-                $body.css({
+                me.$body.css({
                     'height': me.$options.bodyHeight,
                     overflow: 'auto'
                 });
@@ -1542,7 +1538,7 @@ $(function () {
                     if (typeof $.fn.lobiPanel.DEFAULTS[key] !== 'object') {
                         options[key] = val;
                     } else {
-                        options[key] = me.eval('(' + val + ')');
+                        options[key] = eval('(' + val + ')');
                     }
                 }
             }
