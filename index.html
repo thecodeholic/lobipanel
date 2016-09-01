@@ -76,6 +76,28 @@
 </code></pre>
                     </div>
                 </div>
+                <!-- Stateful -->
+                <div>
+                    <h3>Stateful. <small>Saves its state in localStorage</small></h3>
+                    <div class="bs-example">
+                        <div id="lobipanel-stateful" class="panel panel-default" data-inner-id="lobipanel-stateful">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Panel title
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                Lorem ipsum dolor sit amet concealed leaf shah proper council binary. Concealed assured affairs faces, finish easily glows shouted faint. Sentence islands spouting we unbeguiled, faces concealed. Diam rays countries, faces fames peeling bind wary catch solomon, painting, they beats evil. Failing newer landscapes steal retinues vidi rays echoes sheltered evil. Veins concealed spouting obtaining delight wild. Venenatis failing wreaths shouted countries wild, privilege climbing.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <pre><code>$('selector').lobiPanel({
+    stateful: true
+});
+</code></pre>
+                    </div>
+                </div>
                 <!--Font awesome controls-->
                 <div>
                     <h3>Use font awesome icons</h3>
@@ -633,6 +655,9 @@ $('selector').lobiPanel({
                 reload: false,
                 close: false,
                 editTitle: false
+            });
+            $('#lobipanel-stateful').lobiPanel({
+                stateful: true
             });
             $('#lobipanel-font-awesome').lobiPanel({
                 reload: {
