@@ -222,7 +222,6 @@ $(function () {
          */
         pin: function () {
             var me = this;
-            me._triggerEvent("beforePin");
             //hide the tooltip
             me.$heading.find('[data-func="unpin"]').tooltip('hide');
             //disable resize functionality
@@ -243,8 +242,6 @@ $(function () {
             });
             me._setBodyHeight();
             me._insertInParent();
-            me._saveState('pinned');
-            me._triggerEvent("onPin");
             return me;
         },
 
@@ -255,7 +252,6 @@ $(function () {
          */
         unpin: function () {
             var me = this;
-            me._triggerEvent('beforeUnpin');
             if (me.$el.hasClass("panel-collapsed")) {
                 return me;
             }
@@ -303,8 +299,6 @@ $(function () {
             if (me.$options.resize !== 'none') {
                 me.enableResize();
             }
-            me._saveState('unpinned', {top: top, left: left, width: panelWidth, height: panelHeight});
-            me._triggerEvent('onUnpin');
             return me;
         },
 
@@ -1189,7 +1183,7 @@ $(function () {
                 ev.stopPropagation();
             });
             control.on('click', function () {
-                me.togglePin();
+                me.doTogglePin();
             });
         },
         _generateReload: function () {
@@ -1546,8 +1540,8 @@ $(function () {
         },
         _saveState: function (state, params) {
             var me = this;
+            console.log("Save state ", state, params);
             if (!me.hasRandomId && me.$options.stateful) {
-                console.log("Save state ", state, params);
                 me.storage.state = state;
                 if (params) {
                     me.storage.stateParams = params;
@@ -1561,7 +1555,6 @@ $(function () {
         },
         _applyState: function (state, params) {
             var me = this;
-            console.log(state, params);
             switch (state) {
                 case 'unpinned':
                     me.unpin();
@@ -1594,6 +1587,33 @@ $(function () {
             args.unshift(me);
             me.$el.trigger(eventType + '.lobiPanel', args);
         },
+        doPin: function(){
+            var me = this;
+            if (me._triggerEvent("beforePin") !== false){
+                me.pin();
+                me._saveState('pinned');
+                me._triggerEvent("onPin");
+            }
+            return me;
+        },
+        doUnpin: function(){
+            var me = this;
+            if (me._triggerEvent('beforeUnpin') !== false){
+                me.unpin();
+                me._saveState('unpinned', {top: me.$el.css('top'), left: me.$el.css('left'), width: me.$el.css('width'), height: me.$el.css('height')});
+                me._triggerEvent('onUnpin');
+            }
+            return me;
+        },
+        doTogglePin: function(){
+            var me = this;
+            if (this.isPinned()) {
+                this.doUnpin();
+            } else {
+                this.doPin();
+            }
+            return me;
+        }
     };
 
     $.fn.lobiPanel = function (option) {
