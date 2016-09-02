@@ -1479,7 +1479,15 @@ $(function () {
             var items = panel.parent().children();
             items.each(function (index, el) {
                 $(el).attr('data-index', index);
+                var lobiPanel = $(el).data('lobiPanel');
+                console.log(lobiPanel);
+                if (lobiPanel){
+                    lobiPanel._saveState('pinned', {index: index});
+                }
             });
+            // me._saveState('pinned', {index: panel.index()})
+            console.log("Save indices in localstorage");
+
         },
         _removeInnerIdFromParent: function (innerId) {
             var me = this;
@@ -1501,8 +1509,8 @@ $(function () {
             }
             if (me.isOnFullScreen()) {
                 me.$body.css({
-                    width: _calculateBodyWidth(me.$el.width()),
-                    height: _calculateBodyHeight(me.$el.height())
+                    width: me._calculateBodyWidth(me.$el.width()),
+                    height: me._calculateBodyHeight(me.$el.height())
                 });
             }
         },
@@ -1556,6 +1564,11 @@ $(function () {
         _applyState: function (state, params) {
             var me = this;
             switch (state) {
+                case 'pinned':
+                    if (params && params.index !== null) {
+                        me._applyIndex(params.index);
+                    }
+                    break;
                 case 'unpinned':
                     me.unpin();
                     me.setPosition(params.left, params.top);
