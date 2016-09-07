@@ -224,8 +224,7 @@ $(function () {
          */
         pin: function () {
             var me = this;
-            //hide the tooltip
-            me.$heading.find('[data-func="unpin"]').tooltip('hide');
+
             //disable resize functionality
             me.disableResize();
             me.disableDrag();
@@ -258,7 +257,7 @@ $(function () {
                 return me;
             }
             me._disableSorting();
-            me.$heading.find('[data-func="unpin"]').tooltip('hide');
+            // me.$heading.find('[data-func="unpin"]').tooltip('hide');
             if (me.$el.attr('old-style')) {
                 me.$el.attr('style', me.$el.attr('old-style'));
             } else {
@@ -349,7 +348,7 @@ $(function () {
                 me._changeClassOfControl(me.$heading.find('[data-func="minimize"]'));
             } else {
                 me.disableTooltips();
-                me.$heading.find('[data-func="minimize"]').tooltip('hide');
+                // me.$heading.find('[data-func="minimize"]').tooltip('hide');
                 //get footer where we need to put panel
                 var footer = me._getFooterForMinimizedPanels();
                 //find other panels which are already inside footer
@@ -510,7 +509,8 @@ $(function () {
                 return me;
             }
             me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
-            me.$heading.find('[data-func="expand"]').tooltip('hide');
+            // me.$heading.find('[data-func="expand"]').tooltip('hide');
+            me.$el.css('position', 'fixed');
             var res = me._getMaxZIndex();
             //if panel is pinned or minimized, its position is not absolute and
             //animation will not work correctly so we change its position and
@@ -518,7 +518,6 @@ $(function () {
             if (me.isPinned() || me.isMinimized()) {
                 me.enableTooltips();
                 me.$el.css({
-                    position: 'fixed',
                     "z-index": res["z-index"] + 1,
                     left: me.$el.offset().left,
                     top: me.$el.offset().top - $(window).scrollTop(),
@@ -589,7 +588,7 @@ $(function () {
             var me = this;
             me._triggerEvent("beforeSmallSize");
             me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
-            me.$heading.find('[data-func="expand"]').tooltip('hide');
+            // me.$heading.find('[data-func="expand"]').tooltip('hide');
             var css = me.$el.attr('old-style').getCss();
             //we get css properties from old-style (saved before expanding)
             //and we animate panel to this css properties
@@ -1162,17 +1161,17 @@ $(function () {
                 control.attr('data-tooltip', options.tooltip);
             }
 
-            me._onEditTitleClick(control);
+            me._attachEditTitleClickListener(control);
             return $('<li></li>').append(control);
         },
-        _onEditTitleClick: function (control) {
+        _attachEditTitleClickListener: function (control) {
             var me = this;
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
-                me.$heading.find('[data-func="editTitle"]').tooltip('hide');
+                control.tooltip('hide');
                 if (me.isTitleEditing()) {
                     me.finishTitleEditing();
                 } else {
@@ -1189,15 +1188,17 @@ $(function () {
                 control.append('<span class="control-title">' + options.tooltip + '</span>');
                 control.attr('data-tooltip', options.tooltip);
             }
-            me._onUnpinClick(control);
+            me._attachUnpinClickListener(control);
             return $('<li></li>').append(control);
         },
-        _onUnpinClick: function (control) {
+        _attachUnpinClickListener: function (control) {
             var me = this;
+            //hide the tooltip
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
             control.on('click', function () {
+                control.tooltip('hide');
                 me.doTogglePin();
             });
         },
@@ -1210,20 +1211,17 @@ $(function () {
                 control.append('<span class="control-title">' + options.tooltip + '</span>');
                 control.attr('data-tooltip', options.tooltip);
             }
-            me._onReloadClick(control);
+            me._attachReloadClickListener(control);
             return $('<li></li>').append(control);
         },
-        _onReloadClick: function (control) {
+        _attachReloadClickListener: function (control) {
             var me = this;
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
             control.on('click', function () {
-                me.load({
-                    callback: function () {
-                        control.tooltip('hide');
-                    }
-                });
+                control.tooltip('hide');
+                me.load();
             });
         },
         _generateMinimize: function () {
@@ -1235,16 +1233,17 @@ $(function () {
                 control.append('<span class="control-title">' + options.tooltip + '</span>');
                 control.attr('data-tooltip', options.tooltip);
             }
-            me._onMinimizeClick(control);
+            me._attachMinimizeClickListener(control);
             return $('<li></li>').append(control);
         },
-        _onMinimizeClick: function (control) {
+        _attachMinimizeClickListener: function (control) {
             var me = this;
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
+                control.tooltip('hide');
                 me.toggleMinimize();
             });
         },
@@ -1257,16 +1256,17 @@ $(function () {
                 control.append('<span class="control-title">' + options.tooltip + '</span>');
                 control.attr('data-tooltip', options.tooltip);
             }
-            me._onExpandClick(control);
+            me._attachExpandClickListener(control);
             return $('<li></li>').append(control);
         },
-        _onExpandClick: function (control) {
+        _attachExpandClickListener: function (control) {
             var me = this;
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
+                control.tooltip('hide');
                 me.toggleSize();
             });
         },
@@ -1279,10 +1279,10 @@ $(function () {
                 control.append('<span class="control-title">' + options.tooltip + '</span>');
                 control.attr('data-tooltip', options.tooltip);
             }
-            me._onCloseClick(control);
+            me._attachCloseClickListener(control);
             return $('<li></li>').append(control);
         },
-        _onCloseClick: function (control) {
+        _attachCloseClickListener: function (control) {
             var me = this;
             control.on('mousedown', function (ev) {
                 ev.stopPropagation();
@@ -1579,7 +1579,7 @@ $(function () {
             var me = this;
             switch (state) {
                 case 'pinned':
-                    if (params && params.index !== null) {
+                    if (params && params.index !== null && params.index !== undefined) {
                         me._applyIndex(params.index);
                     }
                     break;
