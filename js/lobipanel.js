@@ -145,7 +145,9 @@ $(function () {
         me.$heading = this.$el.find('>.panel-heading');
         me.$body = this.$el.find('>.panel-body');
         me._init();
+        me.$el.css('display', 'none');
         me._applyState(me.$options.state, me.$options.stateParams);
+        me.$el.css('display', 'block');
         me._applyIndex(me.$options.initialIndex);
     };
 
@@ -464,7 +466,7 @@ $(function () {
                         .addClass('lobipanel-minimized');
                     var maxWidth = 'calc(100% - ' + me.$heading.find('.dropdown-menu li').length * me.$heading.find('.dropdown-menu li').first().outerWidth() + "px)";
                     me.$heading.find('.panel-title').css('max-width', maxWidth);
-                    me._saveState('unpinned');
+                    me._updateUnpinnedState();
                     me._triggerEvent("onMaximize");
                 });
             }
@@ -626,7 +628,7 @@ $(function () {
                 if (me.$options.bodyHeight !== 'auto'){
                     me._saveState('pinnned');
                 } else {
-                    me._saveState('unpinned');
+                    me._updateUnpinnedState();
                 }
                 me.$body.css({
                     width: bWidth,
@@ -655,12 +657,14 @@ $(function () {
         /**
          * Closes the panel. Removes it from document
          *
+         * @param {number} animationDuration
          * @returns {LobiPanel}
          */
-        close: function () {
-            var me = this;
+        close: function (animationDuration) {
+            var me = this,
+                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
             me._triggerEvent('beforeClose');
-            me.$el.hide(100, function () {
+            me.$el.hide(animationDuration, function () {
                 if (me.isOnFullScreen()) {
                     $('body').css('overflow', 'auto');
                 }
@@ -680,10 +684,13 @@ $(function () {
          *
          * @param {number} left
          * @param {number} top
+         * @param {number} animationDuration
          * @returns {LobiPanel}
          */
-        setPosition: function (left, top) {
-            var me = this;
+        setPosition: function (left, top, animationDuration) {
+            var me = this,
+                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
+
             //this method works only if panel is not pinned
             if (me.isPinned()) {
                 return me;
@@ -691,7 +698,7 @@ $(function () {
             me.$el.animate({
                 'left': left,
                 'top': top
-            }, 100);
+            }, animationDuration);
             return me;
         },
 
@@ -699,20 +706,22 @@ $(function () {
          * Set the width of the panel
          *
          * @param {number} w
+         * @param {number} animationDuration
          * @returns {LobiPanel}
          */
-        setWidth: function (w) {
-            var me = this;
+        setWidth: function (w, animationDuration) {
+            var me = this,
+                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
             if (me.isPinned()) {
                 return me;
             }
             var bWidth = me._calculateBodyWidth(w);
             me.$el.animate({
                 width: w
-            }, 100);
+            }, animationDuration);
             me.$body.animate({
                 width: bWidth
-            }, 100);
+            }, animationDuration);
             return me;
         },
 
@@ -720,20 +729,22 @@ $(function () {
          * Set the height of the panel
          *
          * @param {number} h
+         * @param {number} animationDuration
          * @returns {LobiPanel}
          */
-        setHeight: function (h) {
-            var me = this;
+        setHeight: function (h, animationDuration) {
+            var me = this,
+                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
             if (me.isPinned()) {
                 return me;
             }
             var bHeight = me._calculateBodyHeight(h);
             me.$el.animate({
                 height: h
-            }, 100);
+            }, animationDuration);
             me.$body.animate({
                 height: bHeight
-            }, 100);
+            }, animationDuration);
             return me;
         },
 
@@ -742,10 +753,12 @@ $(function () {
          *
          * @param {number} w
          * @param {number} h
+         * @param {number} animationDuration
          * @returns {LobiPanel}
          */
-        setSize: function (w, h) {
-            var me = this;
+        setSize: function (w, h, animationDuration) {
+            var me = this,
+                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
             if (me.isPinned()) {
                 return me;
             }
@@ -754,11 +767,11 @@ $(function () {
             me.$el.animate({
                 height: h,
                 width: w
-            }, 100);
+            }, animationDuration);
             me.$body.animate({
                 height: bHeight,
                 width: bWidth
-            }, 100);
+            }, animationDuration);
             return me;
         },
 
@@ -828,8 +841,9 @@ $(function () {
                 start: function () {
                     me.$el.css('position', 'absolute');
                 },
-                end: function () {
+                stop: function () {
                     me.$el.css('position', '');
+                    me._updateUnpinnedState();
                 }
             });
             return me;
@@ -887,6 +901,7 @@ $(function () {
                         width: bWidth,
                         height: bHeight
                     });
+                    me._updateUnpinnedState();
                     me._triggerEvent("onResize");
                 }
             });
@@ -1570,8 +1585,8 @@ $(function () {
                     break;
                 case 'unpinned':
                     me.unpin();
-                    me.setPosition(params.left, params.top);
-                    me.setSize(params.width, params.height);
+                    me.setPosition(params.left, params.top, 0);
+                    me.setSize(params.width, params.height, 0);
                     break;
                 case 'minimized':
                     me.unpin();
@@ -1612,7 +1627,7 @@ $(function () {
             var me = this;
             if (me._triggerEvent('beforeUnpin') !== false){
                 me.unpin();
-                me._saveState('unpinned', {top: me.$el.css('top'), left: me.$el.css('left'), width: me.$el.css('width'), height: me.$el.css('height')});
+                me._updateUnpinnedState();
                 me._triggerEvent('onUnpin');
             }
             return me;
@@ -1625,6 +1640,19 @@ $(function () {
                 this.doPin();
             }
             return me;
+        },
+        _updateUnpinnedState: function(){
+            var me = this;
+            me._saveState('unpinned', me.getAlignment());
+        },
+        getAlignment: function(){
+            var me = this;
+            return {
+                top: me.$el.css('top'),
+                left: me.$el.css('left'),
+                width: me.$el.css('width'),
+                height: me.$el.css('height')
+            };
         }
     };
 
