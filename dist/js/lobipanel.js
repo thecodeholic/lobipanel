@@ -1480,8 +1480,7 @@ $(function () {
             items.each(function (index, el) {
                 $(el).attr('data-index', index);
                 var lobiPanel = $(el).data('lobiPanel');
-                console.log(lobiPanel);
-                if (lobiPanel){
+                if (lobiPanel && lobiPanel.$options.stateful && !lobiPanel.hasRandomId){
                     lobiPanel._saveState('pinned', {index: index});
                 }
             });
