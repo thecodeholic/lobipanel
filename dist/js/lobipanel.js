@@ -593,6 +593,7 @@ $(function () {
             //we get css properties from old-style (saved before expanding)
             //and we animate panel to this css properties
             me.$el.animate({
+                position: 'absolute',
                 left: css.left,
                 top: css.top,
                 width: css.width,
