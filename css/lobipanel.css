@@ -601,3 +601,6 @@ body.lobipanel-minimized {
   border: 1px dashed #919191;
   margin-bottom: 15px;
 }
+.lobipanel-parent-sortable {
+  min-height: 20px;
+}
