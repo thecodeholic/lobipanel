@@ -365,7 +365,7 @@ body.lobipanel-minimized {
 .lobipanel > .panel-heading .dropdown .dropdown-menu {
   left: auto;
   right: 0;
-  min-width: initial;
+  min-width: 0;
   margin-top: 0;
   border-radius: 0;
 }
@@ -416,7 +416,7 @@ body.lobipanel-minimized {
     border: none;
     padding: 0;
     margin: 0;
-    min-width: initial;
+    min-width: 0;
     width: auto;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -495,7 +495,7 @@ body.lobipanel-minimized {
 }
 .lobipanel.panel-unpin.panel-minimized {
   float: left;
-  position: initial;
+  position: static;
   border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -525,7 +525,7 @@ body.lobipanel-minimized {
   border: none;
   padding: 0;
   margin: 0;
-  min-width: initial;
+  min-width: 0;
   width: auto;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -577,7 +577,7 @@ body.lobipanel-minimized {
   display: none !important;
 }
 .lobipanel.panel-expanded > .panel-heading {
-  cursor: initial;
+  cursor: default;
 }
 .lobipanel.panel-expanded > .panel-heading .dropdown .dropdown-menu > li > a[data-func="unpin"],
 .lobipanel.panel-expanded > .panel-heading .dropdown .dropdown-menu > li > a[data-func="minimize"] {

@@ -46,7 +46,7 @@ body.lobipanel-minimized{
             .dropdown-menu{
                 left: auto;
                 right: 0;
-                min-width: initial;
+                min-width: 0;
                 margin-top: 0;
                 border-radius: 0;
                 >li>a{
@@ -138,7 +138,7 @@ body.lobipanel-minimized{
         }
         &.panel-minimized{
             float: left;
-            position: initial;
+            position: static;
             border-radius: 0;
             .box-shadow(none);
             min-width: @lobipanel-panel-minimized-min-width;
@@ -177,7 +177,7 @@ body.lobipanel-minimized{
     }
     &.panel-expanded{
         >.panel-heading{
-            cursor: initial;
+            cursor: default;
             .dropdown{
                 .dropdown-menu{
                     >li{
@@ -224,7 +224,7 @@ body.lobipanel-minimized{
             border: none;
             padding: 0;
             margin: 0;
-            min-width: initial;
+            min-width: 0;
             width: auto;
             .box-shadow(none);
             background: transparent;
