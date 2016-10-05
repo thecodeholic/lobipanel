@@ -1066,8 +1066,11 @@ $(function () {
          * @returns {LobiPanel}
          */
         finishTitleEditing: function () {
-            var me = this;
-            var input = me.$heading.find('input');
+            var me = this,
+                input = me.$heading.find('input');
+            if (me._triggerEvent('beforeTitleChange', input.val()) === false){
+                return me;
+            }
             me.$heading.find('.panel-title').html(input.val());
             input.remove();
             me._changeClassOfControl(me.$heading.find('[data-func="editTitle"]'));
@@ -1082,7 +1085,6 @@ $(function () {
          */
         enableTooltips: function () {
             var me = this;
-            console.log("enable tooltips");
             if ($(window).width() < 768) {
                 return me;
             }
@@ -1188,7 +1190,7 @@ $(function () {
             var bsTooltip = $el.data('bs.tooltip');
 
             if (bsTooltip){
-                this.hideTooltip($el);
+                $el.tooltip('hide');
             }
             return this;
         },
@@ -1626,7 +1628,13 @@ $(function () {
             var me = this;
             var args = Array.prototype.slice.call(arguments, 1);
             args.unshift(me);
+
             me.$el.trigger(eventType + '.lobiPanel', args);
+            if (me.$options[eventType] && typeof me.$options[eventType] === 'function'){
+                return me.$options[eventType].apply(me, args);
+            }
+
+            return true;
         },
         doPin: function(){
             var me = this;
@@ -1762,7 +1770,18 @@ $(function () {
             icon: 'glyphicon glyphicon-pencil',
             icon2: 'glyphicon glyphicon-floppy-disk',
             tooltip: 'Edit title'
-        }
+        },
+
+
+
+
+        // Events
+        /**
+         * @event beforeTitleChange
+         * Fires before title change happens. Returning false will prevent title change from happening.
+         * @param {LobiPanel} The <code>LobiPanel</code> instance
+         */
+        beforeTitleChange: null
     };
 
     $('.lobipanel').lobiPanel();

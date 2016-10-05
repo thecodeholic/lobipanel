@@ -697,7 +697,13 @@ $('selector').lobiPanel({
                 bodyHeight: 400
             });
             $('#lobipanel-multiple').find('.panel').lobiPanel({
-                sortable: true
+                sortable: true,
+                beforeTitleChange: function(lobiPanel, title){
+                    console.log("beforeTitleChange", arguments);
+                    if (!title) {
+                        return false;
+                    }
+                }
             });
         });
     </script>
