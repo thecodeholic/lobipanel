@@ -184,7 +184,6 @@ $(function () {
             var parent = me.$el.parent();
             me._appendInnerIdToParent(parent, me.innerId);
             me._enableSorting();
-            me._adjustForScreenSize();
             me._onToggleIconsBtnClick();
             me._enableResponsiveness();
             me._setBodyHeight();
@@ -257,7 +256,6 @@ $(function () {
                 return me;
             }
             me._disableSorting();
-            // me.$heading.find('[data-func="unpin"]').tooltip('hide');
             if (me.$el.attr('old-style')) {
                 me.$el.attr('style', me.$el.attr('old-style'));
             } else {
@@ -348,7 +346,6 @@ $(function () {
                 me._changeClassOfControl(me.$heading.find('[data-func="minimize"]'));
             } else {
                 me.disableTooltips();
-                // me.$heading.find('[data-func="minimize"]').tooltip('hide');
                 //get footer where we need to put panel
                 var footer = me._getFooterForMinimizedPanels();
                 //find other panels which are already inside footer
@@ -509,7 +506,6 @@ $(function () {
                 return me;
             }
             me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
-            // me.$heading.find('[data-func="expand"]').tooltip('hide');
             me.$el.css('position', 'fixed');
             var res = me._getMaxZIndex();
             //if panel is pinned or minimized, its position is not absolute and
@@ -588,7 +584,6 @@ $(function () {
             var me = this;
             me._triggerEvent("beforeSmallSize");
             me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
-            // me.$heading.find('[data-func="expand"]').tooltip('hide');
             var css = me.$el.attr('old-style').getCss();
             //we get css properties from old-style (saved before expanding)
             //and we animate panel to this css properties
@@ -1087,6 +1082,7 @@ $(function () {
          */
         enableTooltips: function () {
             var me = this;
+            console.log("enable tooltips");
             if ($(window).width() < 768) {
                 return me;
             }
@@ -1114,7 +1110,14 @@ $(function () {
          */
         disableTooltips: function () {
             var me = this;
-            me.$heading.find('.dropdown-menu>li>a').tooltip('destroy');
+            var $links = me.$heading.find('.dropdown-menu>li>a');
+            $links.each(function(ind, el){
+                var bsTooltip = $(el).data('bs.tooltip');
+                if (bsTooltip){
+                    $(el).tooltip('destroy');
+                }
+            });
+            // me.$heading.find('.dropdown-menu>li>a').tooltip('destroy');
             return me;
         },
 
@@ -1172,13 +1175,22 @@ $(function () {
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
-                control.tooltip('hide');
+                me.hideTooltip(control);
                 if (me.isTitleEditing()) {
                     me.finishTitleEditing();
                 } else {
                     me.startTitleEditing();
                 }
             });
+        },
+
+        hideTooltip: function($el){
+            var bsTooltip = $el.data('bs.tooltip');
+
+            if (bsTooltip){
+                this.hideTooltip($el);
+            }
+            return this;
         },
         _generateUnpin: function () {
             var me = this;
@@ -1199,7 +1211,7 @@ $(function () {
                 ev.stopPropagation();
             });
             control.on('click', function () {
-                control.tooltip('hide');
+                me.hideTooltip(control);
                 me.doTogglePin();
             });
         },
@@ -1221,7 +1233,7 @@ $(function () {
                 ev.stopPropagation();
             });
             control.on('click', function () {
-                control.tooltip('hide');
+                me.hideTooltip(control);
                 me.load();
             });
         },
@@ -1244,7 +1256,7 @@ $(function () {
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
-                control.tooltip('hide');
+                me.hideTooltip(control);
                 me.toggleMinimize();
             });
         },
@@ -1267,7 +1279,7 @@ $(function () {
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
-                control.tooltip('hide');
+                me.hideTooltip(control);
                 me.toggleSize();
             });
         },
@@ -1290,7 +1302,7 @@ $(function () {
             });
             control.on('click', function (ev) {
                 ev.stopPropagation();
-                control.tooltip('hide');
+                me.hideTooltip(control);
                 me.close();
             });
         },
@@ -1531,6 +1543,7 @@ $(function () {
         },
         _enableResponsiveness: function () {
             var me = this;
+            me._adjustForScreenSize();
             $(window).on('resize.lobiPanel', function () {
                 me._adjustForScreenSize();
             });
