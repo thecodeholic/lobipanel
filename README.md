@@ -1,4 +1,6 @@
 # LobiPanel
+[![CDNJS](https://img.shields.io/cdnjs/v/lobipanel.svg)](https://cdnjs.com/libraries/lobipanel)
+
 jQuery plugin for bootstrap panels. It extends panels with several common and useful functions.
 
 [View Demo](http://lobianijs.com/site/lobipanel)
