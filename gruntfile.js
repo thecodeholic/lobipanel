@@ -63,7 +63,7 @@ module.exports = function(grunt){
                 ]
             }
         },
-        
+
         watch: {
             scriptsDev: {
                 files: ['js/*.js'],
