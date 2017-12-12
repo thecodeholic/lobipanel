@@ -39,17 +39,22 @@ gulp.task('cssmin', function () {
     .pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('uglify', function () {
+gulp.task('scripts', function () {
   gulp.src([
     './js/lobipanel.js'
   ])
+
+    .pipe(gulp.dest('./dist/js'))
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('./dist/js'));
-
+    .pipe(gulp.dest('./dist/js'))
 });
 
 gulp.task('watch', function () {
   gulp.watch('./less/**/*.less', ['less']);
-  gulp.watch('./less/**/*.less', ['sc']);
+  gulp.watch('./js/**/*.js', ['scripts']);
+});
+
+gulp.task('default', ['less', 'copy', 'cssmin', 'scripts'], function () {
+  gulp.start('watch');
 });

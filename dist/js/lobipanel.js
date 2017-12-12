@@ -1142,6 +1142,9 @@ $(function () {
             if (me.$options.expand !== false) {
                 menu.append(me._generateExpand());
             }
+            if (me.$options.changeStyle !== false) {
+                menu.append(me._generateChangeStyle());
+            }
             if (me.$options.close !== false) {
                 menu.append(me._generateClose());
             }
@@ -1272,6 +1275,18 @@ $(function () {
                 control.attr('data-tooltip', options.tooltip);
             }
             me._attachExpandClickListener(control);
+            return $('<li></li>').append(control);
+        },
+        _generateChangeStyle: function(){
+            var me = this;
+            var options = me.$options.changeStyle;
+            var control = $('<a data-func="changeStyle"></a>');
+            control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
+            if (options.tooltip && typeof options.tooltip === 'string') {
+                control.append('<span class="control-title">' + options.tooltip + '</span>');
+                control.attr('data-tooltip', options.tooltip);
+            }
+            // me._attachExpandClickListener(control);
             return $('<li></li>').append(control);
         },
         _attachExpandClickListener: function (control) {
@@ -1761,6 +1776,10 @@ $(function () {
             icon: 'glyphicon glyphicon-resize-full', //icon is shown when panel is not on full screen
             icon2: 'glyphicon glyphicon-resize-small', //icon2 is shown when pane is on full screen state
             tooltip: 'Fullscreen'       //tooltip text, If you want to disable tooltip, set it to false
+        },
+        changeStyle: {
+            icon: 'glyphicon glyphicon-th', //icon is shown when panel is not on full screen
+            tooltip: 'Style'       //tooltip text, If you want to disable tooltip, set it to false
         },
         close: {
             icon: 'glyphicon glyphicon-remove', //You can user glyphicons if you do not want to use font-awesome
