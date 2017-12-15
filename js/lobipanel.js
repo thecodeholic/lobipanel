@@ -234,8 +234,22 @@ $(function () {
             me.$el.removeClass('panel-unpin')
                 //save current position, z-index and size to use it for later unpin
                 .attr('old-style', me.$el.attr('style'))
-                .removeAttr('style')
+                // .removeAttr('style')
                 .css('position', 'relative');
+
+            var toRemoveProperties = [
+              'position',
+              'z-index',
+              'left',
+              'top',
+              'width',
+              'height'
+            ];
+
+            for (var i in toRemoveProperties){
+              me.$el.css(toRemoveProperties[i], '');
+            }
+
             me.$body.css({
                 width: '',
                 height: ''
@@ -585,6 +599,16 @@ $(function () {
             me._triggerEvent("beforeSmallSize");
             me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
             var css = me.$el.attr('old-style').getCss();
+
+            var toRemoveProperties = [
+              'position',
+              'z-index',
+              'left',
+              'top',
+              'width',
+              'height'
+            ];
+
             //we get css properties from old-style (saved before expanding)
             //and we animate panel to this css properties
             me.$el.animate({
@@ -601,7 +625,10 @@ $(function () {
                 //if panel is pinned we also remove its style attribute and we
                 //append panel in its parent element
                 if (!me.$el.hasClass('panel-unpin')) {
-                    me.$el.removeAttr('style');
+                    for (var i in toRemoveProperties) {
+                      me.$el.css(toRemoveProperties[i], '');
+                    }
+                    // me.$el.removeAttr('style');
                     me._insertInParent();
                     me._enableSorting();
                 } else {
@@ -1280,14 +1307,85 @@ $(function () {
         _generateChangeStyle: function(){
             var me = this;
             var options = me.$options.changeStyle;
-            var control = $('<a data-func="changeStyle"></a>');
-            control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
+            var $control = $('<a data-func="changeStyle"></a>');
+            $control.append('<i class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + options.icon + '"></i>');
             if (options.tooltip && typeof options.tooltip === 'string') {
-                control.append('<span class="control-title">' + options.tooltip + '</span>');
-                control.attr('data-tooltip', options.tooltip);
+                $control.append('<span class="control-title">' + options.tooltip + '</span>');
+                $control.attr('data-tooltip', options.tooltip);
             }
             // me._attachExpandClickListener(control);
-            return $('<li></li>').append(control);
+
+            var $dropdown = $('<li class="style-change-item"></li>').append($control);
+
+            var $menu = $('<div>', {
+                'class': 'style-list'
+            }).appendTo($dropdown);
+
+            if (me.$options.styles){
+                for (var i = 0; i < me.$options.styles.length; i++){
+                    var style = me.$options.styles[i];
+                    $menu.append('<div class="style-item style-primary" style="background-color: ' +
+                      style.bg + '" data-bg="' + style.bg + '" data-text="' + style.text + '"></div>');
+                }
+            }
+            $menu.find('.style-item').on('click', function(){
+              var $item = $(this);
+              me.$heading.css('background-color', $item.data('bg'));
+              me.$heading.css('color', $item.data('text'));
+              me.$el.css('border-color', $item.data('bg'));
+              $menu.removeClass('opened');
+            });
+
+            $control.on('click', function(){
+                var $this = $(this);
+                var $parent = $this.closest('.style-change-item');
+                $parent.find('.style-list').toggleClass('opened');
+            });
+
+            return $dropdown;
+        },
+
+        _createDropdownForStyleChange: function(){
+            var me = this;
+            var $dropdown = $('<div>', {
+                'class': 'dropdown'
+            }).append(
+                $('<button>', {
+                    'type': 'button',
+                    'data-toggle': 'dropdown',
+                    'class': 'btn btn-default btn-xs',
+                    'html': '<i class="glyphicon glyphicon-th"></i>'
+                })
+            );
+            var $menu = $('<div>', {
+                'class': 'dropdown-menu dropdown-menu-right'
+            }).appendTo($dropdown);
+
+            for (var i = 0; i < 0; i++) {
+                var st = me.$globalOptions.listStyles[i];
+                var st = 'primary';
+                $('<div class="' + st + '"></div>')
+                    .on('mousedown', function (ev) {
+                        ev.stopPropagation()
+                    })
+                    .click(function () {
+                        var classes = me.$el[0].className.split(' ');
+                        var oldClass = null;
+                        for (var i = 0; i < classes.length; i++) {
+                            if (me.$globalOptions.listStyles.indexOf(classes[i]) > -1) {
+                                oldClass = classes[i];
+                            }
+                        }
+                        me.$el.removeClass(me.$globalOptions.listStyles.join(" "))
+                            .addClass(this.className);
+
+                        me._triggerEvent('styleChange', [me, oldClass, this.className]);
+
+                    })
+                    .appendTo($menu);
+            }
+
+            return $dropdown;
         },
         _attachExpandClickListener: function (control) {
             var me = this;
@@ -1593,7 +1691,7 @@ $(function () {
         },
         _saveState: function (state, params) {
             var me = this;
-            console.log("Save state ", state, params);
+            // console.log("Save state ", state, params);
             if (!me.hasRandomId && me.$options.stateful) {
                 me.storage.state = state;
                 if (params) {
@@ -1790,8 +1888,32 @@ $(function () {
             icon2: 'glyphicon glyphicon-floppy-disk',
             tooltip: 'Edit title'
         },
-
-
+        styles: [
+          {
+            bg: '#d9534f',
+            text: '#FFF'
+          },
+          {
+            bg: '#f0ad4e',
+            text: '#FFF'
+          },
+          {
+            bg: '#337ab7',
+            text: '#FFF'
+          },
+          {
+            bg: '#5bc0de',
+            text: '#FFF'
+          },
+          {
+            bg: '#4753e4',
+            text: '#FFF'
+          },
+          {
+            bg: '#9e4aea',
+            text: '#FFF'
+          }
+        ],
 
 
         // Events

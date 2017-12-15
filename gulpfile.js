@@ -51,8 +51,8 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('./less/**/*.less', ['less']);
-  gulp.watch('./js/**/*.js', ['scripts']);
+  gulp.watch('./less/**/*.less', ['less', 'cssmin', 'copy']);
+  gulp.watch('./js/**/*.js', ['scripts', 'copy']);
 });
 
 gulp.task('default', ['less', 'copy', 'cssmin', 'scripts'], function () {
