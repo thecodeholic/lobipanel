@@ -1331,6 +1331,7 @@ $(function () {
             $menu.find('.style-item').on('click', function(){
               var $item = $(this);
               me.$heading.css('background-color', $item.data('bg'));
+              me.$heading.css('border-color', $item.data('bg'));
               me.$heading.css('color', $item.data('text'));
               me.$el.css('border-color', $item.data('bg'));
               $menu.removeClass('opened');
