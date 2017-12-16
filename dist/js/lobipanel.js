@@ -193,6 +193,7 @@ $(function () {
             var maxWidth = 'calc(100% - ' + me.$heading.find('.dropdown-menu').children().length * me.$heading.find('.dropdown-menu li').first().outerWidth() + "px)";
             me.$heading.find('.panel-title').css('max-width', maxWidth);
 
+            // me.savepanelPositions();
             me._triggerEvent("init");
         },
         /**
@@ -1603,14 +1604,37 @@ $(function () {
                 opacity: 0.7,
                 revert: 300,
                 update: function (event, ui) {
-                    var innerId = ui.item.data('inner-id');
-                    me._removeInnerIdFromParent(innerId);
-                    me._appendInnerIdToParent(ui.item.parent(), innerId);
-                    me._updateDataIndices(ui.item);
+                    me.savepanelPositions();
+
+                    // me._removeInnerIdFromParent(innerId);
+                    // me._appendInnerIdToParent(ui.item.parent(), innerId);
+                    // me._updateDataIndices(ui.item);
                     me._triggerEvent('dragged');
                 }
             });
         },
+
+        savepanelPositions: function(){
+
+            var $parents = $('.lobipanel-parent-sortable');
+            $parents.each(function(index, parent){
+                var $parent = $(parent);
+
+                var parentInnerId = $parent.data('inner-id');
+                if (!parentInnerId){
+                    console.error("Panel does not have parent id " +    parentInnerId);
+                    return;
+                }
+                var $childPanels = $parent.find('.lobipanel');
+                var positions = {};
+                $childPanels.each(function(index, el){
+                    var $el = $(el);
+                    positions[$el.data('inner-id')] = index;
+                });
+                localStorage.setItem(STORAGE_PREFIX + 'parent_' + parentInnerId, JSON.stringify(positions));
+            });
+        },
+
         _disableSorting: function () {
             var me = this;
             var parent = me.$el.parent();
@@ -1698,6 +1722,7 @@ $(function () {
                 if (params) {
                     me.storage.stateParams = params;
                 }
+
                 me._saveLocalStorage(me.storage);
             }
         },
@@ -1709,9 +1734,24 @@ $(function () {
             var me = this;
             switch (state) {
                 case 'pinned':
-                    if (params && params.index !== null && params.index !== undefined) {
-                        me._applyIndex(params.index);
+                    // console.log(localStorage);
+                    for (var i in localStorage){
+                        if (i.indexOf(STORAGE_PREFIX + 'parent_') === 0){
+                            var innerParentId = i.replace(STORAGE_PREFIX + 'parent_', '');
+                            var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
+                            if ($parent.length){
+                                var panelPositions = JSON.parse(localStorage[i]);
+                                // console.log(panelPositions);
+                                for (var j in panelPositions){
+                                    var $panel = $('[data-inner-id='+j+']');
+                                    $panel.insertAt(panelPositions[j], $parent);
+                                }
+                            }
+                        }
                     }
+                    // if (params && params.index !== null && params.index !== undefined) {
+                    //     me._applyIndex(params.index);
+                    // }
                     break;
                 case 'unpinned':
                     me.unpin();
