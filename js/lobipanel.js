@@ -233,22 +233,22 @@ $(function () {
             me._offPanelClick();
             //remove panel-unpin class
             me.$el.removeClass('panel-unpin')
-                //save current position, z-index and size to use it for later unpin
+            //save current position, z-index and size to use it for later unpin
                 .attr('old-style', me.$el.attr('style'))
                 // .removeAttr('style')
                 .css('position', 'relative');
 
             var toRemoveProperties = [
-              'position',
-              'z-index',
-              'left',
-              'top',
-              'width',
-              'height'
+                'position',
+                'z-index',
+                'left',
+                'top',
+                'width',
+                'height'
             ];
 
-            for (var i in toRemoveProperties){
-              me.$el.css(toRemoveProperties[i], '');
+            for (var i in toRemoveProperties) {
+                me.$el.css(toRemoveProperties[i], '');
             }
 
             me.$body.css({
@@ -602,12 +602,12 @@ $(function () {
             var css = me.$el.attr('old-style').getCss();
 
             var toRemoveProperties = [
-              'position',
-              'z-index',
-              'left',
-              'top',
-              'width',
-              'height'
+                'position',
+                'z-index',
+                'left',
+                'top',
+                'width',
+                'height'
             ];
 
             //we get css properties from old-style (saved before expanding)
@@ -627,7 +627,7 @@ $(function () {
                 //append panel in its parent element
                 if (!me.$el.hasClass('panel-unpin')) {
                     for (var i in toRemoveProperties) {
-                      me.$el.css(toRemoveProperties[i], '');
+                        me.$el.css(toRemoveProperties[i], '');
                     }
                     // me.$el.removeAttr('style');
                     me._insertInParent();
@@ -648,7 +648,7 @@ $(function () {
                 } else if (me.$options.bodyHeight !== 'auto') {
                     bHeight = me.$options.bodyHeight;
                 }
-                if (me.$options.bodyHeight !== 'auto'){
+                if (me.$options.bodyHeight !== 'auto') {
                     me._saveState('pinnned');
                 } else {
                     me._updateUnpinnedState();
@@ -685,7 +685,7 @@ $(function () {
          */
         close: function (animationDuration) {
             var me = this,
-                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
+                animationDuration = animationDuration === undefined ? 100 : animationDuration;
             me._triggerEvent('beforeClose');
             me.$el.hide(animationDuration, function () {
                 if (me.isOnFullScreen()) {
@@ -712,7 +712,7 @@ $(function () {
          */
         setPosition: function (left, top, animationDuration) {
             var me = this,
-                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
+                animationDuration = animationDuration === undefined ? 100 : animationDuration;
 
             //this method works only if panel is not pinned
             if (me.isPinned()) {
@@ -734,7 +734,7 @@ $(function () {
          */
         setWidth: function (w, animationDuration) {
             var me = this,
-                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
+                animationDuration = animationDuration === undefined ? 100 : animationDuration;
             if (me.isPinned()) {
                 return me;
             }
@@ -757,7 +757,7 @@ $(function () {
          */
         setHeight: function (h, animationDuration) {
             var me = this,
-                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
+                animationDuration = animationDuration === undefined ? 100 : animationDuration;
             if (me.isPinned()) {
                 return me;
             }
@@ -781,7 +781,7 @@ $(function () {
          */
         setSize: function (w, h, animationDuration) {
             var me = this,
-                animationDuration = animationDuration  === undefined ? 100 : animationDuration;
+                animationDuration = animationDuration === undefined ? 100 : animationDuration;
             if (me.isPinned()) {
                 return me;
             }
@@ -1096,7 +1096,7 @@ $(function () {
         finishTitleEditing: function () {
             var me = this,
                 input = me.$heading.find('input');
-            if (me._triggerEvent('beforeTitleChange', input.val()) === false){
+            if (me._triggerEvent('beforeTitleChange', input.val()) === false) {
                 return me;
             }
             me.$heading.find('.panel-title').html(input.val());
@@ -1141,9 +1141,9 @@ $(function () {
         disableTooltips: function () {
             var me = this;
             var $links = me.$heading.find('.dropdown-menu>li>a');
-            $links.each(function(ind, el){
+            $links.each(function (ind, el) {
                 var bsTooltip = $(el).data('bs.tooltip');
-                if (bsTooltip){
+                if (bsTooltip) {
                     $(el).tooltip('destroy');
                 }
             });
@@ -1217,10 +1217,10 @@ $(function () {
             });
         },
 
-        hideTooltip: function($el){
+        hideTooltip: function ($el) {
             var bsTooltip = $el.data('bs.tooltip');
 
-            if (bsTooltip){
+            if (bsTooltip) {
                 $el.tooltip('hide');
             }
             return this;
@@ -1305,7 +1305,7 @@ $(function () {
             me._attachExpandClickListener(control);
             return $('<li></li>').append(control);
         },
-        _generateChangeStyle: function(){
+        _generateChangeStyle: function () {
             var me = this;
             var options = me.$options.changeStyle;
             var $control = $('<a data-func="changeStyle"></a>');
@@ -1322,23 +1322,23 @@ $(function () {
                 'class': 'style-list'
             }).appendTo($dropdown);
 
-            if (me.$options.styles){
-                for (var i = 0; i < me.$options.styles.length; i++){
+            if (me.$options.styles) {
+                for (var i = 0; i < me.$options.styles.length; i++) {
                     var style = me.$options.styles[i];
                     $menu.append('<div class="style-item style-primary" style="background-color: ' +
-                      style.bg + '" data-bg="' + style.bg + '" data-text="' + style.text + '"></div>');
+                        style.bg + '" data-bg="' + style.bg + '" data-text="' + style.text + '"></div>');
                 }
             }
-            $menu.find('.style-item').on('click', function(){
-              var $item = $(this);
-              me.$heading.css('background-color', $item.data('bg'));
-              me.$heading.css('border-color', $item.data('bg'));
-              me.$heading.css('color', $item.data('text'));
-              me.$el.css('border-color', $item.data('bg'));
-              $menu.removeClass('opened');
+            $menu.find('.style-item').on('click', function () {
+                var $item = $(this);
+                me.$heading.css('background-color', $item.data('bg'));
+                me.$heading.css('border-color', $item.data('bg'));
+                me.$heading.css('color', $item.data('text'));
+                me.$el.css('border-color', $item.data('bg'));
+                $menu.removeClass('opened');
             });
 
-            $control.on('click', function(){
+            $control.on('click', function () {
                 var $this = $(this);
                 var $parent = $this.closest('.style-change-item');
                 $parent.find('.style-list').toggleClass('opened');
@@ -1347,7 +1347,7 @@ $(function () {
             return $dropdown;
         },
 
-        _createDropdownForStyleChange: function(){
+        _createDropdownForStyleChange: function () {
             var me = this;
             var $dropdown = $('<div>', {
                 'class': 'dropdown'
@@ -1614,20 +1614,20 @@ $(function () {
             });
         },
 
-        savepanelPositions: function(){
+        savepanelPositions: function () {
 
             var $parents = $('.lobipanel-parent-sortable');
-            $parents.each(function(index, parent){
+            $parents.each(function (index, parent) {
                 var $parent = $(parent);
 
                 var parentInnerId = $parent.data('inner-id');
-                if (!parentInnerId){
-                    console.error("Panel does not have parent id " +    parentInnerId);
+                if (!parentInnerId) {
+                    console.error("Panel does not have parent id " + parentInnerId);
                     return;
                 }
                 var $childPanels = $parent.find('.lobipanel');
                 var positions = {};
-                $childPanels.each(function(index, el){
+                $childPanels.each(function (index, el) {
                     var $el = $(el);
                     positions[$el.data('inner-id')] = index;
                 });
@@ -1648,7 +1648,7 @@ $(function () {
             items.each(function (index, el) {
                 $(el).attr('data-index', index);
                 var lobiPanel = $(el).data('lobiPanel');
-                if (lobiPanel && lobiPanel.$options.stateful && !lobiPanel.hasRandomId){
+                if (lobiPanel && lobiPanel.$options.stateful && !lobiPanel.hasRandomId) {
                     lobiPanel._saveState('pinned', {index: index});
                 }
             });
@@ -1735,15 +1735,15 @@ $(function () {
             switch (state) {
                 case 'pinned':
                     // console.log(localStorage);
-                    for (var i in localStorage){
-                        if (i.indexOf(STORAGE_PREFIX + 'parent_') === 0){
+                    for (var i in localStorage) {
+                        if (i.indexOf(STORAGE_PREFIX + 'parent_') === 0) {
                             var innerParentId = i.replace(STORAGE_PREFIX + 'parent_', '');
                             var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
-                            if ($parent.length){
+                            if ($parent.length) {
                                 var panelPositions = JSON.parse(localStorage[i]);
                                 // console.log(panelPositions);
-                                for (var j in panelPositions){
-                                    var $panel = $('[data-inner-id='+j+']');
+                                for (var j in panelPositions) {
+                                    var $panel = $('[data-inner-id=' + j + ']');
                                     $panel.insertAt(panelPositions[j], $parent);
                                 }
                             }
@@ -1784,31 +1784,31 @@ $(function () {
             args.unshift(me);
 
             me.$el.trigger(eventType + '.lobiPanel', args);
-            if (me.$options[eventType] && typeof me.$options[eventType] === 'function'){
+            if (me.$options[eventType] && typeof me.$options[eventType] === 'function') {
                 return me.$options[eventType].apply(me, args);
             }
 
             return true;
         },
-        doPin: function(){
+        doPin: function () {
             var me = this;
-            if (me._triggerEvent("beforePin") !== false){
+            if (me._triggerEvent("beforePin") !== false) {
                 me.pin();
                 me._saveState('pinned');
                 me._triggerEvent("onPin");
             }
             return me;
         },
-        doUnpin: function(){
+        doUnpin: function () {
             var me = this;
-            if (me._triggerEvent('beforeUnpin') !== false){
+            if (me._triggerEvent('beforeUnpin') !== false) {
                 me.unpin();
                 me._updateUnpinnedState();
                 me._triggerEvent('onUnpin');
             }
             return me;
         },
-        doTogglePin: function(){
+        doTogglePin: function () {
             var me = this;
             if (this.isPinned()) {
                 this.doUnpin();
@@ -1817,11 +1817,11 @@ $(function () {
             }
             return me;
         },
-        _updateUnpinnedState: function(){
+        _updateUnpinnedState: function () {
             var me = this;
             me._saveState('unpinned', me.getAlignment());
         },
-        getAlignment: function(){
+        getAlignment: function () {
             var me = this;
             return {
                 top: me.$el.css('top'),
@@ -1930,30 +1930,30 @@ $(function () {
             tooltip: 'Edit title'
         },
         styles: [
-          {
-            bg: '#d9534f',
-            text: '#FFF'
-          },
-          {
-            bg: '#f0ad4e',
-            text: '#FFF'
-          },
-          {
-            bg: '#337ab7',
-            text: '#FFF'
-          },
-          {
-            bg: '#5bc0de',
-            text: '#FFF'
-          },
-          {
-            bg: '#4753e4',
-            text: '#FFF'
-          },
-          {
-            bg: '#9e4aea',
-            text: '#FFF'
-          }
+            {
+                bg: '#d9534f',
+                text: '#FFF'
+            },
+            {
+                bg: '#f0ad4e',
+                text: '#FFF'
+            },
+            {
+                bg: '#337ab7',
+                text: '#FFF'
+            },
+            {
+                bg: '#5bc0de',
+                text: '#FFF'
+            },
+            {
+                bg: '#4753e4',
+                text: '#FFF'
+            },
+            {
+                bg: '#9e4aea',
+                text: '#FFF'
+            }
         ],
 
 
@@ -1967,5 +1967,28 @@ $(function () {
     };
 
     $('.lobipanel').lobiPanel();
+
+    var $parent = $('.lobipanel-parent-sortable');
+    if (!$parent.hasClass('ui-sortable')) {
+        $parent.sortable({
+            connectWith: '.lobipanel-parent-sortable',
+            items: '.lobipanel-sortable',
+            handle: '.panel-heading',
+            cursor: 'move',
+            placeholder: 'lobipanel-placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.7,
+            revert: 300,
+            update: function (event, ui) {
+                console.log(ui);
+                // me.savepanelPositions();
+                //
+                // // me._removeInnerIdFromParent(innerId);
+                // // me._appendInnerIdToParent(ui.item.parent(), innerId);
+                // // me._updateDataIndices(ui.item);
+                // me._triggerEvent('dragged');
+            }
+        });
+    }
 });
 
