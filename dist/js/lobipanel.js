@@ -84,21 +84,30 @@ Number.prototype.isBetween = function (num1, num2, including) {
  * @returns {undefined}
  */
 $.fn.insertAt = function (i, selector) {
-    var object = selector;
+    var $object = selector;
     if (typeof selector === 'string') {
-        object = $(selector);
+        $object = $(selector);
     }
 
-    i = Math.min(object.children().length, i);
+    i = Math.min($object.children().length, i);
     if (i == 0) {
-        object.prepend(this);
+        $object.prepend(this);
         return this;
     }
     var oldIndex = this.data('index');
 
+    if (!i || isNaN(i)){
+        i = $object.children().length - 1;
+    }
     this.attr('data-index', i);
-    object.find(">*:nth-child(" + i + ")").after(this);
-    object.children().each(function (index, el) {
+
+    var $el = $object.children().eq(i);
+    if ($el.length){
+        $el.after(this);
+    } else {
+        $object.append(this);
+    }
+    $object.children().each(function (index, el) {
         var $el = $(el);
         if (oldIndex < i && index > oldIndex && index <= i) {
             $el.attr('data-index', parseInt($el.data('data-index'), 10) - 1);
