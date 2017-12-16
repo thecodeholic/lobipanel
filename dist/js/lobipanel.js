@@ -193,6 +193,9 @@ $(function () {
             var maxWidth = 'calc(100% - ' + me.$heading.find('.dropdown-menu').children().length * me.$heading.find('.dropdown-menu li').first().outerWidth() + "px)";
             me.$heading.find('.panel-title').css('max-width', maxWidth);
 
+            if (me.getParam('panelTitle')) {
+                me.$heading.find('.panel-title').html(me.getParam('panelTitle'));
+            }
             // me.savepanelPositions();
             me._triggerEvent("init");
         },
@@ -649,7 +652,7 @@ $(function () {
                 } else if (me.$options.bodyHeight !== 'auto') {
                     bHeight = me.$options.bodyHeight;
                 }
-                if (me.$options.bodyHeight !== 'auto') {
+                if ( me.isPinned()) {
                     me._saveState('pinnned');
                 } else {
                     me._updateUnpinnedState();
@@ -1100,6 +1103,8 @@ $(function () {
             if (me._triggerEvent('beforeTitleChange', input.val()) === false) {
                 return me;
             }
+
+            me.saveParam('panelTitle', input.val());
             me.$heading.find('.panel-title').html(input.val());
             input.remove();
             me._changeClassOfControl(me.$heading.find('[data-func="editTitle"]'));
@@ -1726,6 +1731,18 @@ $(function () {
 
                 me._saveLocalStorage(me.storage);
             }
+        },
+        getParam: function (key, value) {
+            var me = this;
+            // console.log("Save state ", state, params);
+            return me.storage[key];
+        },
+        saveParam: function (key, value) {
+            var me = this;
+            // console.log("Save state ", state, params);
+            me.storage[key] = value;
+
+            me._saveLocalStorage(me.storage);
         },
         _saveLocalStorage: function (storage) {
             var me = this;
