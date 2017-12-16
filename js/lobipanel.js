@@ -101,7 +101,7 @@ $.fn.insertAt = function (i, selector) {
     }
     this.attr('data-index', i);
 
-    var $el = $object.children().eq(i);
+    var $el = $object.children().eq(i - 1);
     if ($el.length){
         $el.after(this);
     } else {
@@ -205,6 +205,12 @@ $(function () {
             if (me.getParam('panelTitle')) {
                 me.$heading.find('.panel-title').html(me.getParam('panelTitle'));
             }
+
+            var style = me.getParam('panelStyle');
+            if (style) {
+                me.applyStyle(style.bg, style.text);
+            }
+
             // me.savepanelPositions();
             me._triggerEvent("init");
         },
@@ -533,6 +539,7 @@ $(function () {
             if (me.$el.hasClass("panel-collapsed")) {
                 return me;
             }
+            me.$el.attr('data-index', me.$el.index());
             me._changeClassOfControl(me.$heading.find('[data-func="expand"]'));
             me.$el.css('position', 'fixed');
             var res = me._getMaxZIndex();
@@ -662,7 +669,7 @@ $(function () {
                     bHeight = me.$options.bodyHeight;
                 }
                 if ( me.isPinned()) {
-                    me._saveState('pinnned');
+                    me._saveState('pinned');
                 } else {
                     me._updateUnpinnedState();
                 }
@@ -1346,10 +1353,11 @@ $(function () {
             }
             $menu.find('.style-item').on('click', function () {
                 var $item = $(this);
-                me.$heading.css('background-color', $item.data('bg'));
-                me.$heading.css('border-color', $item.data('bg'));
-                me.$heading.css('color', $item.data('text'));
-                me.$el.css('border-color', $item.data('bg'));
+                me.saveParam('panelStyle', {
+                    bg: $item.data('bg'),
+                    text: $item.data('text')
+                });
+                me.applyStyle($item.data('bg'), $item.data('text'));
                 $menu.removeClass('opened');
             });
 
@@ -1360,6 +1368,14 @@ $(function () {
             });
 
             return $dropdown;
+        },
+
+        applyStyle: function(color, text){
+            var me = this;
+            me.$heading.css('background-color', color);
+            me.$heading.css('border-color', color);
+            me.$heading.css('color', text);
+            me.$el.css('border-color', color);
         },
 
         _createDropdownForStyleChange: function () {
@@ -1620,9 +1636,11 @@ $(function () {
                 revert: 300,
                 update: function (event, ui) {
                     me.savepanelPositions();
+                    var $panel = ui.item;
 
-                    // me._removeInnerIdFromParent(innerId);
-                    // me._appendInnerIdToParent(ui.item.parent(), innerId);
+                    var innerId = $panel.data('inner-id');
+                    me._removeInnerIdFromParent(innerId);
+                    me._appendInnerIdToParent(ui.item.parent(), innerId);
                     // me._updateDataIndices(ui.item);
                     me._triggerEvent('dragged');
                 }
@@ -1662,10 +1680,6 @@ $(function () {
             var items = panel.parent().children();
             items.each(function (index, el) {
                 $(el).attr('data-index', index);
-                var lobiPanel = $(el).data('lobiPanel');
-                if (lobiPanel && lobiPanel.$options.stateful && !lobiPanel.hasRandomId) {
-                    lobiPanel._saveState('pinned', {index: index});
-                }
             });
             // me._saveState('pinned', {index: panel.index()})
             console.log("Save indices in localstorage");
@@ -1674,8 +1688,10 @@ $(function () {
         _removeInnerIdFromParent: function (innerId) {
             var me = this;
             var parent = $('[' + LobiPanel.PRIVATE_OPTIONS.parentAttr + '~=' + innerId + ']');
-            var innerIds = parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr).replace(innerId, '').trim().replace(/\s{2,}/g, ' ');
-            parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr, innerIds);
+            if (parent.length) {
+                var innerIds = parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr).replace(innerId, '').trim().replace(/\s{2,}/g, ' ');
+                parent.attr(LobiPanel.PRIVATE_OPTIONS.parentAttr, innerIds);
+            }
         },
         _onToggleIconsBtnClick: function () {
             var me = this;
@@ -1771,6 +1787,8 @@ $(function () {
                                 // console.log(panelPositions);
                                 for (var j in panelPositions) {
                                     var $panel = $('[data-inner-id=' + j + ']');
+                                    me._removeInnerIdFromParent($panel.data('inner-id'));
+                                    me._appendInnerIdToParent($parent, $panel.data('inner-id'));
                                     if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
                                         $panel.insertAt(panelPositions[j], $parent);
                                     }
