@@ -62,4 +62,10 @@ LobiPanel is depended on jQuery, jQuery ui and bootstrap.
 
 #### 2. Initialize plugin and use it
 
+#### Stateful panels
+In order stateful panels to works you need to:
+ - Give `stateful: true` to panel options.
+ - Give `data-inner-id` to lobipanel element and parent element to keep track of the child
+ which contacts lobipanels as unique identifier
+
 ### For documentation and examples visit the plugin's [home page](http://lobianijs.com/site/lobipanel)

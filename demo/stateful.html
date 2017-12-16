@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lobipanel - jQuery plugin for bootstrap panels. It extends panels with several common and useful
+        functions.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Default installation-->
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css"/>
+
+
+    <!--Installation using bower. Preferred!!! -->
+    <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>-->
+    <!--<link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css"/>-->
+    <!--Run `bower install font-awesome` and uncomment this line to see font awesome examples-->
+    <!--<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css"/>-->
+
+    <link rel="stylesheet" href="../css/lobipanel.css"/>
+
+    <link rel="stylesheet" href="../lib/highlight/github.css"/>
+    <link rel="stylesheet" href="../demo/documentation.css"/>
+    <link rel="stylesheet" href="../demo/demo.css"/>
+</head>
+<body>
+
+<div style="padding: 25px;">
+    <div class="row lobipanel-parent-stateful">
+        <div class="col-sm-6" data-inner-id="lobipanel-parent-stateful1">
+            <div class="panel panel-primary" data-sortable="true" data-inner-id="lobipanel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Panel title</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    Panel 2
+                </div>
+            </div>
+            <div class="panel panel-default" data-sortable="true" data-inner-id="lobipanel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Panel title</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    Panel 3
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 lobipanel-parent-sortable" data-inner-id="lobipanel-parent-stateful2">
+            <div class="panel panel-success" data-sortable="true" data-inner-id="lobipanel-success">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Panel title</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    Panel 4
+                </div>
+            </div>
+            <div class="panel panel-danger" data-sortable="true" data-inner-id="lobipanel-danger">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Panel title</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    Panel 5
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Default installation-->
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!--Installation using bower. Preferred!!! -->
+<!--<script src="bower_components/jquery/dist/jquery.min.js"></script>-->
+<!--<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>-->
+<!--<script src="bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js"></script>-->
+<!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+
+<script src="../js/lobipanel.js"></script>
+
+<script>
+    $(function(){
+        $('.lobipanel-parent-stateful .panel').lobiPanel({
+            stateful: true
+        });
+    });
+</script>
+
+</body>
+</html>
