@@ -148,7 +148,7 @@ $(function () {
         me.$el.css('display', 'none');
         me._applyState(me.$options.state, me.$options.stateParams);
         me.$el.css('display', 'block');
-        me._applyIndex(me.$options.initialIndex);
+        // me._applyIndex(me.$options.initialIndex);
     };
 
     LobiPanel.prototype = {
@@ -228,7 +228,7 @@ $(function () {
             //disable resize functionality
             me.disableResize();
             me.disableDrag();
-            me._enableSorting();
+
             //remove on panel click event (which brings the panel into front)
             me._offPanelClick();
             //remove panel-unpin class
@@ -257,6 +257,7 @@ $(function () {
             });
             me._setBodyHeight();
             me._insertInParent();
+            me._enableSorting();
             return me;
         },
 
@@ -1622,7 +1623,7 @@ $(function () {
 
                 var parentInnerId = $parent.data('inner-id');
                 if (!parentInnerId) {
-                    console.error("Panel does not have parent id " + parentInnerId);
+                    console.error("Panel does not have parent id ", $parent);
                     return;
                 }
                 var $childPanels = $parent.find('.lobipanel');
@@ -1744,7 +1745,9 @@ $(function () {
                                 // console.log(panelPositions);
                                 for (var j in panelPositions) {
                                     var $panel = $('[data-inner-id=' + j + ']');
-                                    $panel.insertAt(panelPositions[j], $parent);
+                                    if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
+                                        $panel.insertAt(panelPositions[j], $parent);
+                                    }
                                 }
                             }
                         }
