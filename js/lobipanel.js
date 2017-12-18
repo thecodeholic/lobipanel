@@ -135,6 +135,38 @@ $.fn.enableSelection = function () {
 $(function () {
     var STORAGE_PREFIX = 'lobipanel_';
 
+    var StorageLocal = function(){
+        this.saveChildPositions = function(parentInnerId, positions){
+            if (positions !== undefined) {
+                localStorage.setItem(STORAGE_PREFIX + 'parent_' + parentInnerId, JSON.stringify(positions));
+            }
+        };
+
+        this.savePanelParams = function(innerId, storage){
+            localStorage.setItem(STORAGE_PREFIX + innerId, JSON.stringify(storage));
+        };
+
+        this.getAllPanelPositions = function(){
+            var parents = [];
+            for (var i in localStorage) {
+                if (i.indexOf(STORAGE_PREFIX + 'parent_') === 0) {
+                    var innerParentId = i.replace(STORAGE_PREFIX + 'parent_', '');
+                    var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
+                    if ($parent.length) {
+                        parents[innerParentId] = JSON.parse(localStorage[i]);
+                    }
+                }
+            }
+            return parents;
+        };
+
+        this.getPanelStorage = function(innerId){
+            var item = localStorage.getItem(STORAGE_PREFIX + innerId);
+            return JSON.parse(item || null) || {};
+        };
+
+    };
+
     var LobiPanel = function ($el, options) {
         var me = this;
 
@@ -169,8 +201,10 @@ $(function () {
 
 
             if (!me.hasRandomId) {
-                me.storage = localStorage.getItem(STORAGE_PREFIX + me.innerId);
-                me.storage = JSON.parse(me.storage) || {};
+                if (!this.storageObject){
+                    this.storageObject = new StorageLocal();
+                }
+                me.storage = this.storageObject.getPanelStorage(me.innerId);
             }
             var opts = me._getOptionsFromAttributes();
 //            window.console.log(opts);
@@ -1641,14 +1675,13 @@ $(function () {
                     var innerId = $panel.data('inner-id');
                     me._removeInnerIdFromParent(innerId);
                     me._appendInnerIdToParent(ui.item.parent(), innerId);
-                    // me._updateDataIndices(ui.item);
                     me._triggerEvent('dragged');
                 }
             });
         },
 
         savepanelPositions: function () {
-
+            var me = this;
             var $parents = $('.lobipanel-parent-sortable');
             $parents.each(function (index, parent) {
                 var $parent = $(parent);
@@ -1664,7 +1697,7 @@ $(function () {
                     var $el = $(el);
                     positions[$el.data('inner-id')] = index;
                 });
-                localStorage.setItem(STORAGE_PREFIX + 'parent_' + parentInnerId, JSON.stringify(positions));
+                me.storageObject.saveChildPositions(parentInnerId, positions);
             });
         },
 
@@ -1674,16 +1707,6 @@ $(function () {
             if (parent.hasClass('ui-sortable')) {
                 parent.sortable("destroy");
             }
-        },
-        _updateDataIndices: function (panel) {
-            var me = this;
-            var items = panel.parent().children();
-            items.each(function (index, el) {
-                $(el).attr('data-index', index);
-            });
-            // me._saveState('pinned', {index: panel.index()})
-            console.log("Save indices in localstorage");
-
         },
         _removeInnerIdFromParent: function (innerId) {
             var me = this;
@@ -1771,28 +1794,24 @@ $(function () {
         },
         _saveLocalStorage: function (storage) {
             var me = this;
-            localStorage.setItem(STORAGE_PREFIX + me.innerId, JSON.stringify(storage));
+            me.storageObject.savePanelParams(me.innerId, storage);
         },
         _applyState: function (state, params) {
             var me = this;
             switch (state) {
                 case 'pinned':
-                    // console.log(localStorage);
-                    for (var i in localStorage) {
-                        if (i.indexOf(STORAGE_PREFIX + 'parent_') === 0) {
-                            var innerParentId = i.replace(STORAGE_PREFIX + 'parent_', '');
-                            var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
-                            if ($parent.length) {
-                                var panelPositions = JSON.parse(localStorage[i]);
-                                // console.log(panelPositions);
-                                for (var j in panelPositions) {
-                                    var $panel = $('[data-inner-id=' + j + ']');
-                                    me._removeInnerIdFromParent($panel.data('inner-id'));
-                                    me._appendInnerIdToParent($parent, $panel.data('inner-id'));
-                                    if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
-                                        $panel.insertAt(panelPositions[j], $parent);
-                                    }
-                                }
+                    var allPanelPositions = me.storageObject.getAllPanelPositions();
+                    // console.log(allPanelPositions);
+                    for (var i in allPanelPositions) {
+                        var panelPositions = allPanelPositions[i];
+                        var innerParentId = i;
+                        var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
+                        for (var j in panelPositions) {
+                            var $panel = $('[data-inner-id=' + j + ']');
+                            me._removeInnerIdFromParent($panel.data('inner-id'));
+                            me._appendInnerIdToParent($parent, $panel.data('inner-id'));
+                            if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
+                                $panel.insertAt(panelPositions[j], $parent);
                             }
                         }
                     }
@@ -2002,7 +2021,7 @@ $(function () {
                 text: '#FFF'
             }
         ],
-
+        storageObject: null,
 
         // Events
         /**
@@ -2032,7 +2051,6 @@ $(function () {
                 //
                 // // me._removeInnerIdFromParent(innerId);
                 // // me._appendInnerIdToParent(ui.item.parent(), innerId);
-                // // me._updateDataIndices(ui.item);
                 // me._triggerEvent('dragged');
             }
         });
