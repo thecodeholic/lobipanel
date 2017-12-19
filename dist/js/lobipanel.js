@@ -171,7 +171,7 @@ $(function () {
         var me = this;
 
         this.hasRandomId = false;
-        this.storage = null;
+        this.storage = {};
 
 
         this.$el = $el;
@@ -200,10 +200,10 @@ $(function () {
             }
 
 
+            if (!this.storageObject){
+                this.storageObject = new StorageLocal();
+            }
             if (!me.hasRandomId) {
-                if (!this.storageObject){
-                    this.storageObject = new StorageLocal();
-                }
                 me.storage = this.storageObject.getPanelStorage(me.innerId);
             }
             var opts = me._getOptionsFromAttributes();
@@ -1800,20 +1800,22 @@ $(function () {
             var me = this;
             switch (state) {
                 case 'pinned':
-                    var allPanelPositions = me.storageObject.getAllPanelPositions();
-                    // console.log(allPanelPositions);
-                    for (var i in allPanelPositions) {
+                    if (!me.hasRandomId) {
+                      var allPanelPositions = me.storageObject.getAllPanelPositions();
+                      // console.log(allPanelPositions);
+                      for (var i in allPanelPositions) {
                         var panelPositions = allPanelPositions[i];
                         var innerParentId = i;
                         var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
                         for (var j in panelPositions) {
-                            var $panel = $('[data-inner-id=' + j + ']');
-                            me._removeInnerIdFromParent($panel.data('inner-id'));
-                            me._appendInnerIdToParent($parent, $panel.data('inner-id'));
-                            if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
-                                $panel.insertAt(panelPositions[j], $parent);
-                            }
+                          var $panel = $('[data-inner-id=' + j + ']');
+                          me._removeInnerIdFromParent($panel.data('inner-id'));
+                          me._appendInnerIdToParent($parent, $panel.data('inner-id'));
+                          if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
+                            $panel.insertAt(panelPositions[j], $parent);
+                          }
                         }
+                      }
                     }
                     // if (params && params.index !== null && params.index !== undefined) {
                     //     me._applyIndex(params.index);
