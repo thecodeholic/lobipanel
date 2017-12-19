@@ -200,9 +200,7 @@ $(function () {
             }
 
 
-            if (!this.storageObject){
-                this.storageObject = new StorageLocal();
-            }
+            this.storageObject = options.storageObject || new StorageLocal();
             if (!me.hasRandomId) {
                 me.storage = this.storageObject.getPanelStorage(me.innerId);
             }
