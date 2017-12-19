@@ -2,8 +2,8 @@
   "name": "lobipanel",
   "description": "jQuery plugin for bootstrap panels. It extends panels with several common and useful functions",
   "main": [
-    "dist/css/lobipanel.css",
-    "dist/js/lobipanel.js"
+    "css/lobipanel.css",
+    "js/lobipanel.js"
   ],
   "authors": [
     {
