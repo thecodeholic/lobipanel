@@ -96,13 +96,13 @@ $.fn.insertAt = function (i, selector) {
     }
     var oldIndex = this.data('index');
 
-    if (!i || isNaN(i)){
+    if (!i || isNaN(i)) {
         i = $object.children().length - 1;
     }
     this.attr('data-index', i);
 
     var $el = $object.children().eq(i - 1);
-    if ($el.length){
+    if ($el.length) {
         $el.after(this);
     } else {
         $object.append(this);
@@ -135,18 +135,18 @@ $.fn.enableSelection = function () {
 $(function () {
     var STORAGE_PREFIX = 'lobipanel_';
 
-    var StorageLocal = function(){
-        this.saveChildPositions = function(parentInnerId, positions){
+    var StorageLocal = function () {
+        this.saveChildPositions = function (parentInnerId, positions) {
             if (positions !== undefined) {
                 localStorage.setItem(STORAGE_PREFIX + 'parent_' + parentInnerId, JSON.stringify(positions));
             }
         };
 
-        this.savePanelParams = function(innerId, storage){
+        this.savePanelParams = function (innerId, storage) {
             localStorage.setItem(STORAGE_PREFIX + innerId, JSON.stringify(storage));
         };
 
-        this.getAllPanelPositions = function(){
+        this.getAllPanelPositions = function () {
             var parents = [];
             for (var i in localStorage) {
                 if (i.indexOf(STORAGE_PREFIX + 'parent_') === 0) {
@@ -160,7 +160,7 @@ $(function () {
             return parents;
         };
 
-        this.getPanelStorage = function(innerId){
+        this.getPanelStorage = function (innerId) {
             var item = localStorage.getItem(STORAGE_PREFIX + innerId);
             return JSON.parse(item || null) || {};
         };
@@ -700,7 +700,7 @@ $(function () {
                 } else if (me.$options.bodyHeight !== 'auto') {
                     bHeight = me.$options.bodyHeight;
                 }
-                if ( me.isPinned()) {
+                if (me.isPinned()) {
                     me._saveState('pinned');
                 } else {
                     me._updateUnpinnedState();
@@ -1402,7 +1402,7 @@ $(function () {
             return $dropdown;
         },
 
-        applyStyle: function(color, text){
+        applyStyle: function (color, text) {
             var me = this;
             me.$heading.css('background-color', color);
             me.$heading.css('border-color', color);
@@ -1799,21 +1799,21 @@ $(function () {
             switch (state) {
                 case 'pinned':
                     if (!me.hasRandomId) {
-                      var allPanelPositions = me.storageObject.getAllPanelPositions();
-                      // console.log(allPanelPositions);
-                      for (var i in allPanelPositions) {
-                        var panelPositions = allPanelPositions[i];
-                        var innerParentId = i;
-                        var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
-                        for (var j in panelPositions) {
-                          var $panel = $('[data-inner-id=' + j + ']');
-                          me._removeInnerIdFromParent($panel.data('inner-id'));
-                          me._appendInnerIdToParent($parent, $panel.data('inner-id'));
-                          if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
-                            $panel.insertAt(panelPositions[j], $parent);
-                          }
+                        var allPanelPositions = me.storageObject.getAllPanelPositions();
+                        // console.log(allPanelPositions);
+                        for (var i in allPanelPositions) {
+                            var panelPositions = allPanelPositions[i];
+                            var innerParentId = i;
+                            var $parent = $('.lobipanel-parent-sortable[data-inner-id=' + innerParentId + ']');
+                            for (var j in panelPositions) {
+                                var $panel = $('[data-inner-id=' + j + ']');
+                                me._removeInnerIdFromParent($panel.data('inner-id'));
+                                me._appendInnerIdToParent($parent, $panel.data('inner-id'));
+                                if (!$panel.hasClass('panel-unpin') && !$panel.hasClass('panel-expanded')) {
+                                    $panel.insertAt(panelPositions[j], $parent);
+                                }
+                            }
                         }
-                      }
                     }
                     // if (params && params.index !== null && params.index !== undefined) {
                     //     me._applyIndex(params.index);
@@ -1916,6 +1916,32 @@ $(function () {
             }
         });
         return ret;
+    };
+    $.fn.lobiPanelParent = function (option) {
+        this.each(function (index, parent) {
+            var $parent = $(parent);
+            if (!$parent.hasClass('ui-sortable')) {
+                $parent.sortable({
+                    connectWith: '.lobipanel-parent-sortable',
+                    items: '.lobipanel-sortable',
+                    handle: '.panel-heading',
+                    cursor: 'move',
+                    placeholder: 'lobipanel-placeholder',
+                    forcePlaceholderSize: true,
+                    opacity: 0.7,
+                    revert: 300,
+                    update: function (event, ui) {
+                        console.log(ui);
+                        // me.savepanelPositions();
+                        //
+                        // // me._removeInnerIdFromParent(innerId);
+                        // // me._appendInnerIdToParent(ui.item.parent(), innerId);
+                        // me._triggerEvent('dragged');
+                    }
+                });
+            }
+        });
+        return this;
     };
     LobiPanel.PRIVATE_OPTIONS = {
         //We need to know what is the parent of the panel, that's why we add
@@ -2035,25 +2061,6 @@ $(function () {
     $('.lobipanel').lobiPanel();
 
     var $parent = $('.lobipanel-parent-sortable');
-    if (!$parent.hasClass('ui-sortable')) {
-        $parent.sortable({
-            connectWith: '.lobipanel-parent-sortable',
-            items: '.lobipanel-sortable',
-            handle: '.panel-heading',
-            cursor: 'move',
-            placeholder: 'lobipanel-placeholder',
-            forcePlaceholderSize: true,
-            opacity: 0.7,
-            revert: 300,
-            update: function (event, ui) {
-                console.log(ui);
-                // me.savepanelPositions();
-                //
-                // // me._removeInnerIdFromParent(innerId);
-                // // me._appendInnerIdToParent(ui.item.parent(), innerId);
-                // me._triggerEvent('dragged');
-            }
-        });
-    }
+    $parent.lobiPanelParent();
 });
 
