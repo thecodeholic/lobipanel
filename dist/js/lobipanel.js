@@ -487,6 +487,7 @@ $(function () {
                 me.$el.removeClass('panel-collapsed');
                 me._saveState('pinned');
                 me._changeClassOfControl(me.$heading.find('[data-func="minimize"]'));
+                me._triggerEvent("onMaximize");
             } else {
                 me.enableTooltips();
                 //we get css style which was saved before minimization
