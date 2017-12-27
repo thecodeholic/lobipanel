@@ -190,6 +190,7 @@ $(function () {
         me._applyState(me.$options.state, me.$options.stateParams);
         me.$el.css('display', 'block');
         // me._applyIndex(me.$options.initialIndex);
+        me._triggerEvent("init");
     };
 
     LobiPanel.prototype = {
@@ -244,7 +245,7 @@ $(function () {
             }
 
             // me.savepanelPositions();
-            me._triggerEvent("init");
+            // me._triggerEvent("init");
         },
         /**
          * Checks if panel is initialized. Panel is initialized if it has
