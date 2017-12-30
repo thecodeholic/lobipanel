@@ -1242,7 +1242,7 @@ $(function () {
             var me = this;
             return $('<div class="dropdown"'+(me.$options.forAngularJs ? ' uib-dropdown' : '')+'></div>')
                 .append('<ul class="dropdown-menu dropdown-menu-right"'+(me.$options.forAngularJs ? ' uib-dropdown-menu' : '')+'></ul>')
-                .append('<div class="dropdown-toggle"'+(me.$options.forAngularJs ? ' uib-dropdown-toggle' : '')+'><span class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + me.$options.toggleIcon + '"></div>');
+                .append('<div class="dropdown-toggle"'+(me.$options.forAngularJs ? ' uib-dropdown-toggle' : ' data-toggle="dropdown"')+'><span class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + me.$options.toggleIcon + '"></div>');
         },
         _generateEditTitle: function () {
             var me = this;
