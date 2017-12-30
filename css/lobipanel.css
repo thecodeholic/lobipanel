@@ -373,6 +373,37 @@ body.lobipanel-minimized {
   display: inline-block;
   margin-left: 15px;
 }
+.lobipanel > .panel-heading .dropdown .dropdown-menu .style-change-item {
+  position: relative;
+}
+.lobipanel > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list {
+  position: absolute;
+  background: #f5f5f5;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3);
+  padding: 4px;
+  display: none;
+  width: 92px;
+  top: 100%;
+  right: 0;
+  z-index: 2;
+}
+.lobipanel > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item {
+  cursor: pointer;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 2px;
+  border: 2px solid #f5f5f5;
+}
+.lobipanel > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item:hover {
+  border-color: #FFF;
+}
+.lobipanel > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item:active {
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+.lobipanel > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list.opened {
+  display: block;
+}
 .lobipanel > .panel-heading .dropdown .dropdown-toggle {
   border: none;
   outline: 0;
@@ -452,37 +483,6 @@ body.lobipanel-minimized {
   .lobipanel .panel-heading .dropdown .dropdown-menu > li > a:focus {
     text-shadow: none;
     background-color: transparent;
-  }
-  .lobipanel .panel-heading .dropdown .dropdown-menu .style-change-item {
-    position: relative;
-  }
-  .lobipanel .panel-heading .dropdown .dropdown-menu .style-change-item .style-list {
-    position: absolute;
-    background: #f5f5f5;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3);
-    padding: 4px;
-    display: none;
-    width: 92px;
-    top: 100%;
-    right: 0;
-    z-index: 2;
-  }
-  .lobipanel .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item {
-    cursor: pointer;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    margin: 2px;
-    border: 2px solid #f5f5f5;
-  }
-  .lobipanel .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item:hover {
-    border-color: #FFF;
-  }
-  .lobipanel .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item:active {
-    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.3);
-  }
-  .lobipanel .panel-heading .dropdown .dropdown-menu .style-change-item .style-list.opened {
-    display: block;
   }
   .lobipanel .panel-heading .dropdown .dropdown-toggle {
     display: none;
@@ -592,37 +592,6 @@ body.lobipanel-minimized {
 .lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu > li > a:focus {
   text-shadow: none;
   background-color: transparent;
-}
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu .style-change-item {
-  position: relative;
-}
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list {
-  position: absolute;
-  background: #f5f5f5;
-  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3);
-  padding: 4px;
-  display: none;
-  width: 92px;
-  top: 100%;
-  right: 0;
-  z-index: 2;
-}
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item {
-  cursor: pointer;
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin: 2px;
-  border: 2px solid #f5f5f5;
-}
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item:hover {
-  border-color: #FFF;
-}
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list .style-item:active {
-  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.3);
-}
-.lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-menu .style-change-item .style-list.opened {
-  display: block;
 }
 .lobipanel.panel-unpin.panel-minimized > .panel-heading .dropdown .dropdown-toggle {
   display: none;
