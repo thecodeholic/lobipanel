@@ -1240,9 +1240,9 @@ $(function () {
         },
         _generateDropdown: function () {
             var me = this;
-            return $('<div class="dropdown"></div>')
-                .append('<ul class="dropdown-menu dropdown-menu-right"></ul>')
-                .append('<div class="dropdown-toggle" data-toggle="dropdown"><span class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + me.$options.toggleIcon + '"></div>');
+            return $('<div class="dropdown"'+(me.$options.forAngularJs ? ' uib-dropdown' : '')+'></div>')
+                .append('<ul class="dropdown-menu dropdown-menu-right"'+(me.$options.forAngularJs ? ' uib-dropdown-menu' : '')+'></ul>')
+                .append('<div class="dropdown-toggle"'+(me.$options.forAngularJs ? ' uib-dropdown-toggle' : '')+'><span class="' + LobiPanel.PRIVATE_OPTIONS.iconClass + ' ' + me.$options.toggleIcon + '"></div>');
         },
         _generateEditTitle: function () {
             var me = this;
@@ -1983,6 +1983,7 @@ $(function () {
         bodyHeight: 'auto',
         //This will enable tooltips on panel controls
         tooltips: true,
+        forAngularJs: false,
         toggleIcon: 'glyphicon glyphicon-cog',
         expandAnimation: 100,
         collapseAnimation: 100,
