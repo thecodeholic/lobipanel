@@ -505,8 +505,7 @@ body.lobipanel-minimized {
   border-bottom: none;
 }
 .lobipanel.panel-collapsed > .panel-heading .dropdown .dropdown-menu > li > a[data-func="unpin"],
-.lobipanel.panel-collapsed > .panel-heading .dropdown .dropdown-menu > li > a[data-func="reload"],
-.lobipanel.panel-collapsed > .panel-heading .dropdown .dropdown-menu > li > a[data-func="expand"] {
+.lobipanel.panel-collapsed > .panel-heading .dropdown .dropdown-menu > li > a[data-func="reload"] {
   display: none;
 }
 .lobipanel.panel-expanded,
